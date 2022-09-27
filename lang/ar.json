@@ -1,0 +1,79 @@
+
+
+{
+  "appName": "وصلـنـــي",
+
+  "notFoundPage": "معذرة الصفحة غير موجودة!",
+  "localizationError": "لقد حدث للتو خطأ",
+
+  "done": "حسنًا",
+  "skip": "تخطي",
+  "title1": "تتبع السائقين لحظة بلحظة",
+  "title2": "تاريخ الرحلات",
+  "title3": "مراجعة و تقييم السائقين",
+  "description1": "يتيح التطبيق للمستخدمين تتبع السائقين باستخدام نظام الخرائط",
+  "description2": "الوصول إلى هذه المعلومات يتيح للمستخدمين معرفة تكلفة المشوار ، وعدد الرحلات التي قاموا بعملها على مدار فترة زمنية معينة ، والوجهة التي سافروا إليها",
+  "description3": " يتمكن المستخدمون الذين سافروا مع سائق من تقييم تجربتهم وتقييم السائق",
+
+
+
+  "loginAsAUser": "تسجيل الدخول كمستخدم",
+  "phoneNumber": "رقم الهاتف",
+  "login": "تسجبل الدخول",
+  "dontHaveAccount": "لا تملك حسابًا ؟ ",
+  "registerNow": "إنشاء حساب !",
+
+  "loginNow": "سجل دخولك الآن !",
+  "registerANewUser": "إنشاء حساب جديد",
+  "alreadyHaveAccount": "هل تملك حسابُا بالفعل ؟",
+  "register":"تسجيل" ,
+  "username": "اسم المستخدم",
+  "enterYourName": "من فضلك، قم بكتابة اسمك",
+  "enterYourPhone": "من فضلك، ادخل رقم هاتفك",
+  "enterValidPhone": "من فضلك، ادخل رقم هاتف صالح",
+  "loading": "جاري التحميل",
+
+  "verify": "تحقق",
+  "phoneNumberVerification": "التحقق من رقم الهاتف",
+  "enterTheCodeSent": "ادخل الكود الذي تم ارساله إلى  ",
+  "didntRecieveTheCode": "لم تستقبل الكود ؟",
+  "resend": "إعادة الإرسال",
+  "invalidSMS": "عفوًا الكود غير صالح",
+  "alert": "معذرة",
+  "internetConnectionError": "يرجى التأكد من اتصالك بالانترنت!",
+  "someThingWentWrong": "نأسف لحدوث خطأ ما!",
+  "ok": "موافق",
+  "emptyValue": "لا يمكن ترك الحقول قارغة!",
+  "enterAllDigits": "من فضلك فم بإدخال جميع الحقول",
+  "requestCar": "اطلب سيارة",
+  "from": "من",
+  "to": "إلى",
+  "whereToGo": "إلى أين ؟",
+  "pickUpLocation": "جهة الانطلاق",
+  "dropOffLocation": "جهة الوصول",
+  "givePermission": "من فضلك قم بمنح صلاحيات الوصول المطلوبة لكي يعمل التطبيق بصورة صحيحة!",
+  "locationServicesDisabled": "خدمات الموقع معطلة، من فضلك قم بتشغيلها و إعادة المحاولة",
+  "locationPermissionsDenied": "صلاحيات الوصول للموفع معطلة، من فضلك قم بمنح صلاحيات الوصول و إعادة المحاولة",
+  "locationPermissionsDeniedForEver": " تم منع صلاحيات الوصول للموفع بشكل دائم، من فضلك قم بمنح صلاحيات الوصول من اعدادات الهاتف و إعادة المحاولة",
+  "notFoundLocation": "لم يتم العثور على هذا الموقعَ!",
+  "searchForLocation": "ابحث عن موقع ما",
+  "startPosition": "البداية",
+  "endPosition": "الوصول",
+  "myCurrentLocation": "موقعي الحالي",
+  "myLocation": "موقعي",
+  "savingTokenError": "معذرة لقد حدثت مشكلة اثناء حفظ الملفات!",
+
+
+
+
+  "opps": "عفواً !",
+  "please_check_your_internet_connection_and_try_again": "من فضلك أفحص اتصالك بالانترنت ، وأعد المحاولة",
+  "try_again": "حاول مجدداَ",
+  "welcome": "أهلًا بك",
+
+  "cancel": "إلغاء",
+  "something_went_wrong": "معذرة لقد حدث خطأ ما",
+  "reload_screen": "إعادة تحميل الصفحة",
+  "want_to_logout": "هل تريد تسجيل الخروج؟",
+  "logout": "تسجيل خروج"
+}

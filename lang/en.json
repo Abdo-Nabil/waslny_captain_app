@@ -1,0 +1,78 @@
+{
+  "appName": "Waslny",
+
+  "notFoundPage": "Sorry, but the page is not found!",
+  "localizationError": "An error has been occurred",
+
+  "done": "Done",
+  "skip": "Skip",
+  "title1": "Real-time tracking of drivers",
+  "title2": "Trip history",
+  "title3": "Driver review and rating",
+  "description1": "The app allows users to track drivers in real-time with the help of GPS integration",
+  "description2": "The access to such information allows riders to see how much they were charged for a ride, how many riders they’ve done over some period of time, what experience they had, and which destination they’ve traveled to",
+  "description3": "Users, who have had a ride with a driver, should be able to rate their experience and rate the driver",
+
+
+  "loginAsAUser": "Login as a user",
+  "phoneNumber": "Phone",
+  "login": "Login",
+  "dontHaveAccount": "Don't have account? ",
+  "registerNow": "REGISTER NOW!",
+
+  "loginNow": "LOGIN NOW!",
+  "registerANewUser": "Register a new user",
+  "alreadyHaveAccount": "Already have an account! ",
+  "register": "Register",
+  "username": "Username",
+  "enterYourName": "Please enter your name",
+  "enterYourPhone": "Please enter your phone",
+  "enterValidPhone": "Please enter a valid number",
+  "loading": "Loading",
+
+  "verify": "Verify",
+  "phoneNumberVerification": "Phone Number Verification",
+  "enterTheCodeSent": "Enter the code sent to ",
+  "didntRecieveTheCode": "Didn't receive the code? ",
+  "resend": "RESEND",
+  "invalidSMS": "Invalid SMS code",
+  "alert": "Alert",
+  "internetConnectionError": "Please, check your internet connection!",
+  "someThingWentWrong": "Sorry, something went wrong!",
+  "ok": "Ok",
+  "emptyValue": "Fields Can't be empty",
+  "enterAllDigits": "Please complete all fields",
+  "requestCar": "Request a car",
+  "from": "from",
+  "to": "to",
+  "whereToGo": "Where to go?",
+  "pickUpLocation": "Pick up location",
+  "dropOffLocation": "Drop off location",
+  "givePermission": "Please, provide the required permissions for the app to work properly!",
+  "locationServicesDisabled": "Location services are disabled, please turn on location services and try again",
+  "locationPermissionsDenied": "Location permissions are denied, please grant permissions and try again",
+  "locationPermissionsDeniedForEver": "Location permissions are permanently denied, please grant permissions from settings and try again",
+  "notFoundLocation": "Location not found!",
+  "searchForLocation": "Search for location",
+  "startPosition": "Origin",
+  "endPosition": "Destination",
+  "myCurrentLocation": "My current location",
+  "myLocation": "My location",
+  "savingTokenError": "Sorry, error while saving token!",
+
+
+
+
+
+
+
+  "opps": "OPPS !",
+  "please_check_your_internet_connection_and_try_again": "Please check your Internet Connection and try again",
+  "try_again": "Try Again",
+  "welcome": "Welcome",
+  "cancel": "Cancel",
+  "something_went_wrong": "Sorry, something Went Wrong",
+  "reload_screen": "Reload Screen",
+  "want_to_logout": "Do you want to logout ?",
+  "logout": "Logout"
+}

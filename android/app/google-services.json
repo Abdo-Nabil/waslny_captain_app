@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "1094632662780",
+    "project_id": "waslny-3d962",
+    "storage_bucket": "waslny-3d962.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094632662780:android:2e033c1cb186b3650a1979",
+        "android_client_info": {
+          "package_name": "com.AbdoNabil.waslnyUser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1094632662780-em3a38e103r1s4leh2nsu2vi9v9s1iir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBex6S9r4PsqHOCUMo1ytE2mPBImI1epEE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1094632662780-em3a38e103r1s4leh2nsu2vi9v9s1iir.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1094632662780-k8sokqat6vcg0jqp0oj20i9gl339892h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.AbdoNabil.waslnyUser.waslnyUser"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094632662780:android:a9a4ddf814294ec00a1979",
+        "android_client_info": {
+          "package_name": "com.AbdoNabil.waslny_captain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1094632662780-em3a38e103r1s4leh2nsu2vi9v9s1iir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBex6S9r4PsqHOCUMo1ytE2mPBImI1epEE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1094632662780-em3a38e103r1s4leh2nsu2vi9v9s1iir.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1094632662780-k8sokqat6vcg0jqp0oj20i9gl339892h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.AbdoNabil.waslnyUser.waslnyUser"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
