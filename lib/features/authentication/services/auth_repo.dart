@@ -6,7 +6,7 @@ import 'package:waslny_captain/features/authentication/services/auth_remote_data
 import '../../../core/error/exceptions.dart';
 import '../../../core/error/failures.dart';
 import '../../../core/network/network_info.dart';
-import './models/user_model.dart';
+import './models/captain_model.dart';
 
 class AuthRepo {
   final NetworkInfo networkInfo;
@@ -20,7 +20,87 @@ class AuthRepo {
 
   //-------------Auth remote data--------------------
 
-  Future<Either<Failure, dynamic>> loginOrResendSms(String phoneNumber) async {
+  //
+  //
+  //
+  //
+  //
+  Future<Either<Failure, UserCredential>> createUserWithEmailAndPassword(
+      String email, String password) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final credential = await authRemoteData.createUserWithEmailAndPassword(
+            email, password);
+        return Right(credential);
+      } on WeakPasswordException {
+        return Left(WeakPasswordFailure());
+      } on EmailInUseException {
+        return Left(EmailInUseFailure());
+      } on InvalidEmailException {
+        return Left(InvalidEmailFailure());
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
+  Future<Either<Failure, UserCredential>> signInWithEmailAndPassword(
+      String email, String password) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final credential =
+            await authRemoteData.signInWithEmailAndPassword(email, password);
+        return Right(credential);
+      } on UserNotFoundException {
+        return Left(UserNotFoundFailure());
+      } on WrongPasswordException {
+        return Left(WrongPasswordFailure());
+      } on InvalidEmailException {
+        return Left(InvalidEmailFailure());
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
+  Future<Either<Failure, Unit>> createCaptainAfterSign(
+      CaptainModel captainModel) async {
+    if (await networkInfo.isConnected) {
+      try {
+        await authRemoteData.createCaptainAfterSign(captainModel);
+        return const Right(unit);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
+  // Future<Either<Failure, Unit>> deleteCaptainFromAuthList() async {
+  //   if (await networkInfo.isConnected) {
+  //     try {
+  //       await authRemoteData.deleteCaptainFromAuthList();
+  //       return const Right(unit);
+  //     } on ServerException {
+  //       return Left(ServerFailure());
+  //     }
+  //   } else {
+  //     return Left(OfflineFailure());
+  //   }
+  // }
+
+  //
+  //
+  //
+  //
+
+  //
+  /* Future<Either<Failure, dynamic>> loginOrResendSms(String phoneNumber) async {
     final bool isConnected = await networkInfo.isConnected;
     if (isConnected) {
       //
@@ -85,7 +165,7 @@ class AuthRepo {
     } else {
       return Left(OfflineFailure());
     }
-  }
+  }*/
 
   //-------------Auth local data--------------------
 

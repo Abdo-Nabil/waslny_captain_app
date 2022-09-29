@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:waslny_captain/features/authentication/presentation/login_screen.dart';
+import 'package:waslny_captain/features/authentication/presentation/login_or_register_screen.dart';
 import 'package:waslny_captain/features/home_screen/presentation/home_screen.dart';
 import 'package:waslny_captain/features/on_boarding/on_boarding_screen.dart';
 
@@ -26,7 +26,7 @@ class GeneralCubit extends Cubit<GeneralState> {
     else {
       final String? token = sharedPreferences.getString(AppStrings.storedToken);
       if (token == null) {
-        selectedScreen = const LoginScreen();
+        selectedScreen = const LoginOrRegisterScreen();
       } else {
         selectedScreen = const HomeScreen();
       }

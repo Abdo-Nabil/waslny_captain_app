@@ -13,6 +13,9 @@ import '../../../resources/app_strings.dart';
 import '../cubits/home_screen_cubit.dart';
 import '../services/models/direction_model.dart';
 
+//TODO: After login you must get user(captain) data if any field of non-nullable fields are null,
+//this means that the user account has been created in Auth section, but not in the fireStore (May be connection lost), so request the user to continue entering the data.
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 

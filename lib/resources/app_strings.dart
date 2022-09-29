@@ -41,9 +41,41 @@ class AppStrings {
   static const String emptyValue = 'emptyValue';
   static const String enterAllDigits = 'enterAllDigits';
   static const String savingTokenError = 'savingTokenError';
+  static const String loginAsACaptain = 'loginAsACaptain';
+  static const String registerANewCaptain = 'registerANewCaptain';
+  static const String email = 'email';
+  static const String password = 'password';
+  static const String reenterPassword = 'reenterPassword';
+  static const String youAreYourBusiness = 'youAreYourBusiness';
+  static const String next = 'next';
+  static const String back = 'back';
+  static const String name = 'name';
+  static const String phone = 'phone';
+  static const String age = 'age';
+  static const String gender = 'gender';
+  static const String personalInformation = 'personalInformation';
+  static const String securityInformation = 'securityInformation';
+  static const String carInformation = 'carInformation';
+  static const String search = 'search';
+  static const String invalidEmail = 'invalidEmail';
+  static const String passwordDoesntMatch = 'passwordDoesntMatch';
+  static const String notValidValue = 'notValidValue';
+  static const String notFound = 'notFound';
+  static const String searchDots = 'searchDots';
+  static const String carModel = 'carModel';
+  static const String plateNumber = 'plateNumber';
+  static const String carColor = 'carColor';
+  static const String productionDate = 'productionDate';
+  static const String numOfPassengers = 'numOfPassengers';
+  static const String passwordMustBe = 'passwordMustBe';
+  //
+  static const String weakPassword = 'weakPassword';
+  static const String emailInUse = 'emailInUse';
+  static const String userNotFound = 'userNotFound';
+  static const String wrongPassword = 'wrongPassword';
 
+  //
   //--------------- FireStore
-  static const String usersCollection = 'users';
 
   //--------------- home screen
   static const String requestCar = 'requestCar';
@@ -63,16 +95,12 @@ class AppStrings {
   static const String endPosition = 'endPosition';
   static const String myCurrentLocation = 'myCurrentLocation';
   static const String myLocation = 'myLocation';
-
-  //
-  //
-
-  //
   //
   static const notFoundPage = "notFoundPage";
   static const appName = "appName";
-  static const appName_for_recent_app = "Waslny User";
+  static const appName_for_recent_app = "Waslny Captain";
 
+  //
   static const onBoardingTitle1 = "on_boarding_title1";
   static const onBoardingTitle2 = "on_boarding_title2";
   static const onBoardingTitle3 = "on_boarding_title3";
@@ -82,18 +110,15 @@ class AppStrings {
   static const onBoardingSubTitle2 = "on_boarding_desc2";
   static const onBoardingSubTitle3 = "on_boarding_desc3";
   static const onBoardingSubTitle4 = "on_boarding_desc4";
-  static const password = "password_hint";
   static const usernameError = "username_error";
   static const passwordError = "password_error";
   static const forgetPassword = "forgot_password_text";
   static const registerText = "register_text";
   static const retryAgain = "retry_again";
   static const String emailHint = 'email_hint';
-  static const String invalidEmail = "email_error";
   static const String resetPassword = "reset_password";
   static const String success = "success";
   static const String userNameInvalid = "username_hint_message";
-  static const String mobileNumberInvalid = "mobile_number_hint_message";
   static const String passwordInvalid = "password_hint_message";
   static const mobileNumber = "mobile_number_hint";
   static const profilePicture = "upload_profile_picture";
@@ -101,7 +126,6 @@ class AppStrings {
   static const photoCamera = "photo_from_camera";
   static const home = "home";
   static const notifications = "notification";
-  static const search = "search";
   static const settings = "settings";
   static const services = "services";
   static const stores = "stores";
@@ -124,16 +148,4 @@ class AppStrings {
 
   static const String wordTranslationNotFound =
       '**** Exception **** Word Translation Not Found ****';
-  static const String badRequestError = "bad_request_error";
-  static const String noContent = "no_content";
-  static const String forbiddenError = "forbidden_error";
-  static const String unauthorizedError = "unauthorized_error";
-  static const String notFoundError = "not_found_error";
-  static const String conflictError = "conflict_error";
-  static const String internalServerError = "internal_server_error";
-  static const String unknownError = "unknown_error";
-  static const String timeoutError = "timeout_error";
-  static const String defaultError = "default_error";
-  static const String cacheError = "cache_error";
-  static const String noInternetError = "no_internet_error";
 }

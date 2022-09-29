@@ -46,7 +46,7 @@ class AppTheme {
       // fontFamily: locale.languageCode == 'en' ? 'DynaPuff' : 'Amiri',
       colorScheme: const ColorScheme.dark().copyWith(
         primary: Colors.blue,
-        secondary: Colors.teal,
+        secondary: Colors.blue,
         onPrimary: Colors.white,
         onSecondary: Colors.deepOrange,
 

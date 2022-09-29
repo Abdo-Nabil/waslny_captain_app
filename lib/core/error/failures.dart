@@ -51,3 +51,28 @@ class LocationDisabledFailure extends Failure {
   @override
   List<Object?> get props => [];
 }
+
+class WeakPasswordFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+
+class EmailInUseFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+
+class UserNotFoundFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+
+class WrongPasswordFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+
+class InvalidEmailFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}

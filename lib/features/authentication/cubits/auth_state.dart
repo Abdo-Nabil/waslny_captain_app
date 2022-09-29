@@ -23,21 +23,6 @@ class EndLoadingStateAndNavigate extends AuthState {
   List<Object?> get props => [];
 }
 
-class OtpSentState extends AuthState {
-  @override
-  List<Object?> get props => [];
-}
-
-class ResendSmsState extends AuthState {
-  @override
-  List<Object?> get props => [];
-}
-
-class ActiveResendButtonState extends AuthState {
-  @override
-  List<Object?> get props => [];
-}
-
 /////////////////////////////
 class StartLoadingState extends AuthState {
   @override
@@ -51,28 +36,12 @@ class EndLoadingStateWithError extends AuthState {
   List<Object?> get props => [msg];
 }
 
-class EndLoadingStateWithSmsError extends AuthState {
-  EndLoadingStateWithSmsError();
-  @override
-  List<Object?> get props => [];
-}
-
-class EndLoadingToOtpScreen extends AuthState {
-  @override
-  List<Object?> get props => [];
-}
-
-class EndLoadingToRegisterScreen extends AuthState {
-  @override
-  List<Object?> get props => [];
-}
-
 class EndLoadingToHomeScreen extends AuthState {
   @override
   List<Object?> get props => [];
 }
 
-class SmsListeningException extends AuthState {
+class EndLoadingToRegisterScreen extends AuthState {
   @override
   List<Object?> get props => [];
 }

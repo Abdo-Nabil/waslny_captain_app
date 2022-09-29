@@ -21,3 +21,13 @@ class LocationPermissionException implements Exception {}
 class TimeLimitException implements Exception {}
 
 class LocationDisabledException implements Exception {}
+
+class WeakPasswordException implements Exception {}
+
+class EmailInUseException implements Exception {}
+
+class UserNotFoundException implements Exception {}
+
+class WrongPasswordException implements Exception {}
+
+class InvalidEmailException implements Exception {}

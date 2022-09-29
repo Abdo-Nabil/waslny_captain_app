@@ -11,13 +11,14 @@ import '../../resources/styles_manager.dart';
 class CustomFormFiled extends StatelessWidget {
   final BuildContext context;
   final String label;
-  final Widget iconWidget;
+  final Widget prefixWidget;
+  final Widget? suffixWidget;
   final TextEditingController controller;
   final Function? onChange;
   final Function? validate;
   final Function? onTap;
   final Function? onFieldSubmitted;
-  final bool isNumberKeyboard;
+  final TextInputType? textInputType;
   final bool showPlus20;
   final bool readOnly;
   final bool autoFocus;
@@ -25,13 +26,14 @@ class CustomFormFiled extends StatelessWidget {
   const CustomFormFiled({
     required this.context,
     required this.label,
-    required this.iconWidget,
+    required this.prefixWidget,
+    this.suffixWidget,
     required this.controller,
     this.onChange,
     this.validate,
     this.onTap,
     this.onFieldSubmitted,
-    this.isNumberKeyboard = false,
+    this.textInputType,
     this.showPlus20 = false,
     this.readOnly = false,
     this.autoFocus = false,
@@ -44,24 +46,26 @@ class CustomFormFiled extends StatelessWidget {
         LocalizationCubit.getIns(context).isEnglishLocale();
     return TextFormField(
       controller: controller,
-      keyboardType: isNumberKeyboard ? TextInputType.phone : null,
+      keyboardType: textInputType,
       readOnly: readOnly,
       autofocus: autoFocus,
       style: const TextStyle(color: ColorsManager.whiteColor),
       decoration: InputDecoration(
         labelText: label.tr(context),
-        suffixIcon: isEnglishLocale
-            ? null
-            : showPlus20
-                ? const ArabicSuffix()
-                : null,
+        suffixIcon: !showPlus20
+            ? suffixWidget
+            : isEnglishLocale
+                ? null
+                : showPlus20
+                    ? const ArabicSuffix()
+                    : null,
         prefixIcon: !showPlus20
-            ? iconWidget
+            ? prefixWidget
             : isEnglishLocale
                 ? EnglishPrefix(
-                    iconWidget: iconWidget,
+                    iconWidget: prefixWidget,
                   )
-                : iconWidget,
+                : prefixWidget,
       ),
       onChanged: (value) {
         if (onChange != null) {

@@ -59,20 +59,36 @@
   "myCurrentLocation": "My current location",
   "myLocation": "My location",
   "savingTokenError": "Sorry, error while saving token!",
+  "loginAsACaptain": "Login as a captain",
+  "registerANewCaptain": "Register as a captain",
+  "email": "Email",
+  "password": "Password",
+  "reenterPassword": "Re-enter password",
+  "youAreYourBusiness": "You Are Your Business Boss!",
+  "next": "Next",
+  "back": "Back",
+  "name": "Name",
+  "phone": "Phone",
+  "age": "Age",
+  "gender": "Gender",
+  "personalInformation": "Personal information",
+  "securityInformation": "Security information",
+  "carInformation": "Car information",
+  "searchDots": "Search...",
+  "notFound": "Not found!",
+  "carModel": "Car model",
+  "plateNumber": "Plate number",
+  "carColor": "Car color",
+  "productionDate": "Production date",
+  "numOfPassengers": "Number of passengers",
+  "invalidEmail": "Invalid email",
+  "passwordDoesntMatch": "Password doesn't match",
+  "notValidValue": "Not valid value",
+  "weakPassword": "Sorry, you enter a weak password",
+  "emailInUse": "Sorry, your email is already used",
+  "userNotFound": "Sorry, no captain found with these data",
+  "wrongPassword": "Sorry, your password is wrong",
+  "passwordMustBe": "Password must be 5 or more"
 
 
-
-
-
-
-
-  "opps": "OPPS !",
-  "please_check_your_internet_connection_and_try_again": "Please check your Internet Connection and try again",
-  "try_again": "Try Again",
-  "welcome": "Welcome",
-  "cancel": "Cancel",
-  "something_went_wrong": "Sorry, something Went Wrong",
-  "reload_screen": "Reload Screen",
-  "want_to_logout": "Do you want to logout ?",
-  "logout": "Logout"
 }

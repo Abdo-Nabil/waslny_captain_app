@@ -65,7 +65,7 @@ class _PositionedFormContainerState extends State<PositionedFormContainer> {
                       context: context,
                       label: AppStrings.from,
                       readOnly: true,
-                      iconWidget: const Icon(Icons.add_location_alt_outlined),
+                      prefixWidget: const Icon(Icons.add_location_alt_outlined),
                       controller: _fromController,
                       onTap: () {
                         HomeScreenCubit.getIns(context).fromController =
@@ -86,7 +86,7 @@ class _PositionedFormContainerState extends State<PositionedFormContainer> {
                       context: context,
                       readOnly: true,
                       label: AppStrings.whereToGo,
-                      iconWidget: const Icon(Icons.add_location_alt_outlined),
+                      prefixWidget: const Icon(Icons.add_location_alt_outlined),
                       controller: _toController,
                       onTap: () {
                         HomeScreenCubit.getIns(context).toController =

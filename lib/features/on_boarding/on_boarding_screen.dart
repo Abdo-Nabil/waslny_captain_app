@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:waslny_captain/core/extensions/context_extension.dart';
 import 'package:waslny_captain/core/extensions/string_extension.dart';
+import 'package:waslny_captain/features/authentication/presentation/login_or_register_screen.dart';
 import 'package:waslny_captain/features/general_cubit/general_cubit.dart';
 import 'package:waslny_captain/resources/app_margins_paddings.dart';
 
 import '../../config/routes/app_routes.dart';
 import '../../resources/app_strings.dart';
-import '../authentication/presentation/login_screen.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class OnBoardingScreen extends StatelessWidget {
               .setInitialScreen(Routes.onBoardingRoute);
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) {
-              return const LoginScreen();
+              return const LoginOrRegisterScreen();
             }),
           );
         },

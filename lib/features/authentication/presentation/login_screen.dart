@@ -4,17 +4,19 @@ import 'package:waslny_captain/core/extensions/string_extension.dart';
 import 'package:waslny_captain/core/util/navigator_helper.dart';
 import 'package:waslny_captain/core/widgets/add_vertical_space.dart';
 import 'package:waslny_captain/core/widgets/custom_form_field.dart';
-import 'package:waslny_captain/features/authentication/presentation/widgets/button.dart';
+import 'package:waslny_captain/features/authentication/presentation/register_screen.dart';
+import 'package:waslny_captain/features/authentication/presentation/widgets/custom_button.dart';
 import 'package:waslny_captain/features/authentication/presentation/widgets/image_with_logo.dart';
 import 'package:waslny_captain/features/authentication/presentation/widgets/login_or_register_text.dart';
-import 'package:waslny_captain/features/localization/presentation/cubits/localization_cubit.dart';
+import 'package:waslny_captain/features/authentication/presentation/widgets/text_row.dart';
+import 'package:waslny_captain/features/home_screen/presentation/home_screen.dart';
 import 'package:waslny_captain/resources/app_strings.dart';
 import 'package:waslny_captain/resources/app_margins_paddings.dart';
 
 import '../../../core/util/dialog_helper.dart';
+import '../../../core/widgets/password_form_field.dart';
 import '../../../resources/colors_manager.dart';
 import '../cubits/auth_cubit.dart';
-import 'otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -26,11 +28,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   //
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -44,13 +48,11 @@ class _LoginScreenState extends State<LoginScreen> {
           DialogHelper.loadingDialog(context);
         }
         //
-        else if (state is EndLoadingToOtpScreen) {
+        else if (state is EndLoadingToHomeScreen) {
           Navigator.of(context).pop();
           NavigatorHelper.pushReplacement(
             context,
-            OtpScreen(
-              phoneNumber: _phoneController.text,
-            ),
+            const HomeScreen(),
           );
         }
         //
@@ -67,38 +69,52 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 const ImageWithLogo(),
-                const LoginOrRegisterText(AppStrings.loginAsAUser),
+                const LoginOrRegisterText(AppStrings.loginAsACaptain),
                 const AddVerticalSpace(AppPadding.p20),
                 Padding(
                   padding: const EdgeInsets.all(AppPadding.p16),
                   child: Form(
                     key: _formKey,
-                    child: CustomFormFiled(
-                      context: context,
-                      controller: _phoneController,
-                      label: AppStrings.phoneNumber,
-                      showPlus20: true,
-                      iconWidget: Icon(
-                        LocalizationCubit.getIns(context).isEnglishLocale()
-                            ? Icons.phone
-                            : Icons.phone_enabled,
-                      ),
-                      isNumberKeyboard: true,
-                      onChange: (value) {
-                        AuthCubit.getIns(context).phoneNumberValidator(value);
-                      },
+                    child: Column(
+                      children: [
+                        CustomFormFiled(
+                          context: context,
+                          controller: _emailController,
+                          label: AppStrings.email,
+                          prefixWidget: const Icon(Icons.mail_outline),
+                          validate: (value) {
+                            return AuthCubit.getIns(context)
+                                .validateEmail(context, value);
+                          },
+                        ),
+                        const AddVerticalSpace(AppPadding.p20),
+                        PasswordFormFiled(
+                          context: context,
+                          controller: _passwordController,
+                          label: AppStrings.password,
+                          validate: (value) {
+                            return AuthCubit.getIns(context)
+                                .validatePassword(context, value);
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                BlocBuilder<AuthCubit, AuthState>(
-                  builder: (context, state) {
-                    return Button(
-                      text: AppStrings.login.tr(context),
-                      showButton: AuthCubit.getIns(context).showLoginButton,
-                      onTap: () async {
-                        AuthCubit.getIns(context)
-                            .loginOrResendSms(_phoneController.text);
-                      },
+                CustomButton(
+                  text: AppStrings.login.tr(context),
+                  onTap: () async {
+                    await AuthCubit.getIns(context).login(_emailController.text,
+                        _passwordController.text, _formKey);
+                  },
+                ),
+                TextRow(
+                  text: AppStrings.dontHaveAccount,
+                  textButton: AppStrings.registerNow,
+                  onTap: () {
+                    NavigatorHelper.pushAndRemoveUntil(
+                      context,
+                      const RegisterScreen(),
                     );
                   },
                 ),

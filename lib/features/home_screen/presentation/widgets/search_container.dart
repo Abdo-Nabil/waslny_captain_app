@@ -71,7 +71,7 @@ class _SearchContainerState extends State<SearchContainer> {
                     autoFocus: true,
                     controller: widget.controller,
                     label: widget.label,
-                    iconWidget: const Icon(Icons.search),
+                    prefixWidget: const Icon(Icons.search),
                     onFieldSubmitted: (value) async {
                       await _onSearch(value, isEnglishLocale);
                     },

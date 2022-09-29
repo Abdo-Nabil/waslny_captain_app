@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../../../resources/app_margins_paddings.dart';
 
-class Button extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final String text;
   final bool showButton;
   final Function onTap;
   final double padding;
 
-  const Button(
+  const CustomButton(
       {required this.text,
       required this.onTap,
       this.showButton = true,

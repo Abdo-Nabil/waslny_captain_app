@@ -3,17 +3,97 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../core/error/exceptions.dart';
-import '../../../resources/app_strings.dart';
-import '../../../resources/constants_manager.dart';
-import './models/user_model.dart';
+
+import './models/captain_model.dart';
 
 class AuthRemoteData {
-  String? verificationIdentity;
+  UserCredential? userCredential;
   late String phone;
   late String userId;
 
   //
-  Future loginOrResendSms(String phoneNumber) async {
+  //
+  Future<UserCredential> createUserWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      userCredential = credential;
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        debugPrint('The password provided is too weak.');
+        throw WeakPasswordException();
+      } else if (e.code == 'email-already-in-use') {
+        debugPrint('The account already exists for that email.');
+        throw EmailInUseException();
+      } else if (e.code == 'invalid-email') {
+        debugPrint('the email address is not valid');
+        throw InvalidEmailException();
+      } else {
+        throw ServerException();
+      }
+    } catch (e) {
+      debugPrint(
+          'createUserWithEmailAndPassword :: Auth remote repo :: Exception :: $e');
+      throw ServerException();
+    }
+  }
+
+  Future<UserCredential> signInWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      userCredential = credential;
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        debugPrint('No user found for that email.');
+        throw UserNotFoundException();
+      } else if (e.code == 'wrong-password') {
+        debugPrint('Wrong password provided for that user.');
+        throw WrongPasswordException();
+      } else if (e.code == 'invalid-email') {
+        debugPrint('the email address is not valid');
+        throw InvalidEmailException();
+      } else {
+        throw ServerException();
+      }
+    } catch (e) {
+      debugPrint(
+          'signInWithEmailAndPassword :: Auth remote repo :: Exception :: $e');
+      throw ServerException();
+    }
+  }
+
+  Future createCaptainAfterSign(CaptainModel captainModel) async {
+    try {
+      final db = FirebaseFirestore.instance;
+      await db.collection('captains').add(captainModel.toJson());
+    } catch (e) {
+      debugPrint(
+          'createCaptainAfterSign :: Auth remote repo :: Exception :: $e');
+      throw ServerException();
+    }
+  }
+
+  // Future deleteCaptainFromAuthList() async {
+  //   try {
+  //     await userCredential?.user?.delete();
+  //   } catch (e) {
+  //     debugPrint(
+  //         'deleteCaptainFromAuthList :: Auth remote repo :: Exception :: $e');
+  //     throw ServerException();
+  //   }
+  // }
+  //
+  //
+  //
+  /* Future loginOrResendSms(String phoneNumber) async {
     String temp = AppStrings.countryCode + phoneNumber;
     phone = temp;
     try {
@@ -101,5 +181,5 @@ class AuthRemoteData {
       debugPrint('Get user Exception :: $e');
       throw ServerException();
     }
-  }
+  }*/
 }
