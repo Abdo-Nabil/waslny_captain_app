@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:waslny_captain/features/authentication/presentation/login_or_register_screen.dart';
 import 'package:waslny_captain/features/authentication/presentation/login_screen.dart';
 import 'package:waslny_captain/features/authentication/presentation/register_screen.dart';
+import 'package:waslny_captain/features/on_boarding/on_boarding_screen.dart';
 import 'package:waslny_captain/resources/app_strings.dart';
 
 import 'config/routes/app_routes.dart';
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
                 // home: const LoginScreen(),
                 // home: initialScreen,
                 // home: const RegisterScreen(),
-                home: initialScreen,
+                home: OnBoardingScreen(),
               );
             },
           );

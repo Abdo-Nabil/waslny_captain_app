@@ -6,12 +6,12 @@
 
   "done": "Done",
   "skip": "Skip",
-  "title1": "Real-time tracking of drivers",
+  "title1": "Own your business",
   "title2": "Trip history",
-  "title3": "Driver review and rating",
-  "description1": "The app allows users to track drivers in real-time with the help of GPS integration",
-  "description2": "The access to such information allows riders to see how much they were charged for a ride, how many riders they’ve done over some period of time, what experience they had, and which destination they’ve traveled to",
-  "description3": "Users, who have had a ride with a driver, should be able to rate their experience and rate the driver",
+  "title3": "Feedback on trips",
+  "description1": "Create your business, do something you love, earn more money ",
+  "description2": "The access to such information allows captains to see how much they spent on the application, how many trips they’ve done over some period of time, and which destination they’ve traveled to",
+  "description3": "Captains should be able to know the users experience during trips to improve next trips",
 
 
   "loginAsAUser": "Login as a user",
