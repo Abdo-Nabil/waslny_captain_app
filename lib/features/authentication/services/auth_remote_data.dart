@@ -73,7 +73,11 @@ class AuthRemoteData {
   Future createCaptainAfterSign(CaptainModel captainModel) async {
     try {
       final db = FirebaseFirestore.instance;
-      await db.collection('captains').add(captainModel.toJson());
+      // await db.collection('captains').add(captainModel.toJson());
+      await db
+          .collection('captains')
+          .doc(captainModel.captainId)
+          .set(captainModel.toJson());
     } catch (e) {
       debugPrint(
           'createCaptainAfterSign :: Auth remote repo :: Exception :: $e');

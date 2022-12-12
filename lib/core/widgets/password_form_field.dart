@@ -54,8 +54,8 @@ class _PasswordFormFiledState extends State<PasswordFormFiled> {
             });
           },
           child: isSecureText
-              ? const Icon(Icons.visibility_off)
-              : const Icon(Icons.visibility),
+              ? const Icon(Icons.visibility)
+              : const Icon(Icons.visibility_off),
         ),
       ),
       onChanged: (value) {

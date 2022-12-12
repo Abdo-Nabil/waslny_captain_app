@@ -79,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         CustomFormFiled(
                           context: context,
+                          textInputType: TextInputType.emailAddress,
                           controller: _emailController,
                           label: AppStrings.email,
                           prefixWidget: const Icon(Icons.mail_outline),

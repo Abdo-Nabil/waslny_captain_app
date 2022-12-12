@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import './trip_model.dart';
 
 class CaptainModel extends Equatable {
+  final String? captainId;
   final String email;
   final String password;
   final String name;
@@ -17,6 +18,7 @@ class CaptainModel extends Equatable {
   final String? ratting;
   final List<TripModel>? trips;
   const CaptainModel({
+    this.captainId,
     required this.email,
     required this.password,
     required this.name,
@@ -34,6 +36,7 @@ class CaptainModel extends Equatable {
 
   @override
   List<Object?> get props => [
+        captainId,
         email,
         password,
         name,
@@ -58,6 +61,7 @@ class CaptainModel extends Equatable {
       });
     }
     return CaptainModel(
+      captainId: map['captainId'],
       email: map['email'],
       password: map['password'],
       name: map['name'],
@@ -83,6 +87,7 @@ class CaptainModel extends Equatable {
       }
     }
     return {
+      'captainId': captainId,
       'email': email,
       'password': password,
       'name': name,
@@ -97,5 +102,37 @@ class CaptainModel extends Equatable {
       'ratting': ratting,
       'trips': listOfMaps,
     };
+  }
+
+  CaptainModel copyWith({
+    String? captainId,
+    String? email,
+    String? password,
+    String? name,
+    String? phone,
+    String? age,
+    String? gender,
+    String? carModel,
+    String? plateNumber,
+    String? carColor,
+    String? productionDate,
+    String? numOfPassengers,
+    List<TripModel>? trips,
+  }) {
+    return CaptainModel(
+      captainId: captainId ?? this.captainId,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      age: age ?? this.age,
+      gender: gender ?? this.gender,
+      carModel: carModel ?? this.carModel,
+      plateNumber: plateNumber ?? this.plateNumber,
+      carColor: carColor ?? this.carColor,
+      productionDate: productionDate ?? this.productionDate,
+      numOfPassengers: numOfPassengers ?? this.numOfPassengers,
+      trips: trips ?? this.trips,
+    );
   }
 }

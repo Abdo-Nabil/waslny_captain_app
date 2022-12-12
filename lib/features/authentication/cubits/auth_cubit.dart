@@ -60,7 +60,6 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   //
-  //
   _handleFailure(Failure failure) {
     if (failure.runtimeType == OfflineFailure) {
       emit(EndLoadingStateWithError(AppStrings.internetConnectionError));
@@ -90,14 +89,19 @@ class AuthCubit extends Cubit<AuthState> {
         _handleFailure(failure);
       },
       (credential) async {
-        final either2 = await authRepo.createCaptainAfterSign(captainModel);
+        //
+        final String captainId = credential.user!.uid;
+        await authRepo.setString(AppStrings.storedId, captainId);
+        //
+        final either2 = await authRepo.createCaptainAfterSign(
+            captainModel.copyWith(captainId: captainId));
         either2.fold(
           (failure) async {
             _handleFailure(failure);
           },
           (success) async {
-            final either3 =
-                await authRepo.setToken('${credential.credential?.token}');
+            final either3 = await authRepo.setString(
+                AppStrings.storedToken, '${credential.credential?.token}');
             either3.fold(
               (failure) {
                 _handleFailure(failure);
@@ -123,8 +127,12 @@ class AuthCubit extends Cubit<AuthState> {
           _handleFailure(failure);
         },
         (credential) async {
-          final either2 =
-              await authRepo.setToken('${credential.credential?.token}');
+          //
+          final String captainId = credential.user!.uid;
+          await authRepo.setString(AppStrings.storedId, captainId);
+          //
+          final either2 = await authRepo.setString(
+              AppStrings.storedToken, '${credential.credential?.token}');
           either2.fold(
             (failure) {
               _handleFailure(failure);

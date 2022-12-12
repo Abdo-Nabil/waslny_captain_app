@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: AppStrings.appName_for_recent_app,
+                // title: AppStrings.appName_for_recent_app,
                 theme: AppTheme.lightTheme(selectedLocale, context),
                 darkTheme: AppTheme.darkTheme(selectedLocale, context),
                 themeMode: ThemeMode.dark,
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
                 // home: initialScreen,
                 // home: const RegisterScreen(),
                 home: OnBoardingScreen(),
+                // home: HomeScreen(),
               );
             },
           );

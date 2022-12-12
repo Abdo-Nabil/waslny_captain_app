@@ -4,6 +4,7 @@ class AppStrings {
   static const String storedRoute = 'storedRoute';
   static const String isLightTheme = 'isLightTheme';
   static const String storedToken = 'storedToken';
+  static const String storedId = 'storedId';
 
   //---------------On boarding
   static const String done = 'done';
