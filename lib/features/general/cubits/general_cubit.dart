@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,9 +6,8 @@ import 'package:waslny_captain/features/authentication/presentation/login_or_reg
 import 'package:waslny_captain/features/home_screen/presentation/home_screen.dart';
 import 'package:waslny_captain/features/on_boarding/on_boarding_screen.dart';
 
-import '../../resources/app_strings.dart';
-
-part 'general_state.dart';
+import '../../../resources/app_strings.dart';
+import 'general_state.dart';
 
 class GeneralCubit extends Cubit<GeneralState> {
   final SharedPreferences sharedPreferences;

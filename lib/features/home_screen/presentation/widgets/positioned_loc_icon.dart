@@ -17,7 +17,7 @@ class PositionedLocIcon extends StatelessWidget {
     return Positioned(
       left: isEnglishLocale ? null : AppPadding.p16,
       right: isEnglishLocale ? AppPadding.p16 : null,
-      top: AppPadding.p38,
+      top: AppPadding.p46,
       child: RoundedWidget(
         iconData: Icons.my_location,
         onTap: () async {

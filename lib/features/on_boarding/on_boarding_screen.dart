@@ -4,11 +4,11 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:waslny_captain/core/extensions/context_extension.dart';
 import 'package:waslny_captain/core/extensions/string_extension.dart';
 import 'package:waslny_captain/features/authentication/presentation/login_or_register_screen.dart';
-import 'package:waslny_captain/features/general_cubit/general_cubit.dart';
 import 'package:waslny_captain/resources/app_margins_paddings.dart';
 
 import '../../config/routes/app_routes.dart';
 import '../../resources/app_strings.dart';
+import '../general/cubits/general_cubit.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);

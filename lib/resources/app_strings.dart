@@ -100,7 +100,19 @@ class AppStrings {
   static const notFoundPage = "notFoundPage";
   static const appName = "appName";
   static const appName_for_recent_app = "Waslny Captain";
+  static const youAreOnlineNow = "youAreOnlineNow";
+  static const youAreOfflineNow = "youAreOfflineNow";
+  static const startWorking = "startWorking";
+  static const cannotGetLocalCaptainInfo = "cannotGetLocalCaptainInfo";
+  static const cannotGetCaptainInfo = "cannotGetCaptainInfo";
+  static const wantToStopWorking = "wantToStopWorking";
+  static const wantToStartWorking = "wantToStartWorking";
+  static const working = "working";
+  static const resting = "resting";
+  static const areYouSure = "areYouSure";
+  static const cancel = "cancel";
 
+  //
   //
   static const onBoardingTitle1 = "on_boarding_title1";
   static const onBoardingTitle2 = "on_boarding_title2";

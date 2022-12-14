@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:waslny_captain/core/extensions/string_extension.dart';
 import 'package:waslny_captain/core/util/dialog_helper.dart';
+import 'package:waslny_captain/core/util/toast_helper.dart';
+import 'package:waslny_captain/core/widgets/add_horizontal_space.dart';
+import 'package:waslny_captain/features/authentication/cubits/auth_cubit.dart';
+import 'package:waslny_captain/features/authentication/presentation/widgets/custom_button.dart';
+import 'package:waslny_captain/features/authentication/services/models/captain_model.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_form_container.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/map_container.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_hamb_icon.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_loc_icon.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_yellow_chip.dart';
+import 'package:waslny_captain/features/home_screen/services/models/active_captain_model.dart';
 
 import '../../../resources/app_strings.dart';
 import '../cubits/home_screen_cubit.dart';
@@ -27,7 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
   //
   @override
   void initState() {
+    ToastHelper.initializeToast(context);
     HomeScreenCubit.getIns(context).getMyLocationStream();
+    HomeScreenCubit.getIns(context).getCaptainInformation();
     super.initState();
   }
 
@@ -35,6 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     //
+    // debugPrint(
+    //     'sssss ${HomeScreenCubit.getIns(context).captainInformation.captainId}');
     final DirectionModel? directionModel =
         HomeScreenCubit.getIns(context).directionModel;
     //
@@ -93,6 +104,11 @@ class _HomeScreenState extends State<HomeScreen> {
             Navigator.pop(context);
           }
           //
+          else if (state is HomeWithToastState) {
+            ToastHelper.showToast(
+                context, state.msg.tr(context), state.toastState);
+          }
+          //
         },
         child: Scaffold(
           //TODO: Note
@@ -108,8 +124,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   : Container(),
               const PositionedLocIcon(),
-              const PositionedHambIcon(),
+              const PositionedStatusIcon(),
               const PositionedFormContainer(),
+              // Container(
+              //   color: Colors.black.withOpacity(0.7),
+              //   // height: 200,
+              //   // width: 400,
+              // ),
+              // Stack(
+              //   alignment: Alignment.center,
+              //   children: [
+              //     Container(
+              //       color: Colors.black.withOpacity(0.75),
+              //     ),
+              //     ElevatedButton(
+              //       onPressed: () {
+              //         HomeScreenCubit.getIns(context).addActiveCaptain();
+              //       },
+              //       child: FittedBox(
+              //         child: Row(
+              //           children: [
+              //             const Icon(Icons.power_settings_new),
+              //             const AddHorizontalSpace(12.0),
+              //             Text(AppStrings.startWorking.tr(context)),
+              //           ],
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              // ),
             ],
           ),
         ),

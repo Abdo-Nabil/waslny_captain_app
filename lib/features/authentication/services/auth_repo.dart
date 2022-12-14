@@ -169,17 +169,4 @@ class AuthRepo {
 
   //-------------Auth local data--------------------
 
-  Either<Failure, String?> getToken(String key) {
-    final String? result = authLocalData.getString(key);
-    return Right(result);
-  }
-
-  Future<Either<Failure, Unit>> setString(String key, String value) async {
-    try {
-      await authLocalData.setString(key, value);
-      return Future.value(const Right(unit));
-    } on CacheSavingException {
-      return Left(CacheSavingFailure());
-    }
-  }
 }

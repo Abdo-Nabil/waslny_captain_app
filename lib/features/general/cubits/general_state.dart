@@ -1,4 +1,4 @@
-part of 'general_cubit.dart';
+import 'package:equatable/equatable.dart';
 
 abstract class GeneralState extends Equatable {
   const GeneralState();

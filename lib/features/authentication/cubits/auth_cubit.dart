@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:waslny_captain/core/extensions/string_extension.dart';
 import 'package:waslny_captain/features/authentication/services/models/captain_model.dart';
+import 'package:waslny_captain/features/general/services/general_repo.dart';
 import 'package:waslny_captain/resources/app_strings.dart';
 
 import '../../../../core/error/failures.dart';
@@ -17,9 +18,11 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepo authRepo;
+  final GeneralRepo generalRepo;
 
   AuthCubit({
     required this.authRepo,
+    required this.generalRepo,
   }) : super(AuthInitial());
 
   bool showLoginButton = false;
@@ -91,7 +94,7 @@ class AuthCubit extends Cubit<AuthState> {
       (credential) async {
         //
         final String captainId = credential.user!.uid;
-        await authRepo.setString(AppStrings.storedId, captainId);
+        await generalRepo.setString(AppStrings.storedId, captainId);
         //
         final either2 = await authRepo.createCaptainAfterSign(
             captainModel.copyWith(captainId: captainId));
@@ -100,7 +103,7 @@ class AuthCubit extends Cubit<AuthState> {
             _handleFailure(failure);
           },
           (success) async {
-            final either3 = await authRepo.setString(
+            final either3 = await generalRepo.setString(
                 AppStrings.storedToken, '${credential.credential?.token}');
             either3.fold(
               (failure) {
@@ -129,9 +132,9 @@ class AuthCubit extends Cubit<AuthState> {
         (credential) async {
           //
           final String captainId = credential.user!.uid;
-          await authRepo.setString(AppStrings.storedId, captainId);
+          await generalRepo.setString(AppStrings.storedId, captainId);
           //
-          final either2 = await authRepo.setString(
+          final either2 = await generalRepo.setString(
               AppStrings.storedToken, '${credential.credential?.token}');
           either2.fold(
             (failure) {

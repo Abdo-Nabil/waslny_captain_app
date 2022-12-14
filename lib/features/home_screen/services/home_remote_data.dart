@@ -1,12 +1,17 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:waslny_captain/core/error/exceptions.dart';
+import 'package:waslny_captain/features/authentication/services/models/captain_model.dart';
+import 'package:waslny_captain/features/home_screen/services/models/active_captain_model.dart';
 import 'package:waslny_captain/features/home_screen/services/models/place_model.dart';
 
 import '../../../sensitive/constants.dart';
 import 'package:http/http.dart' as http;
 
+import '../../authentication/services/models/captain_model.dart';
+import '../../authentication/services/models/captain_model.dart';
 import 'models/direction_model.dart';
 
 class HomeRemoteData {
@@ -63,6 +68,43 @@ class HomeRemoteData {
     } else {
       debugPrint(
           "Home remote data getDirections Exception :: ${data['status']}");
+      throw ServerException();
+    }
+  }
+
+  Future<CaptainModel> getCaptainInformation(String captainId) async {
+    try {
+      final db = FirebaseFirestore.instance;
+      final temp = await db.collection('captains').doc(captainId).get();
+      final Map<String, dynamic>? map = temp.data();
+      return CaptainModel.fromJson(map!);
+    } catch (e) {
+      debugPrint(
+          'getCaptainInformation :: Home remote repo :: Exception :: $e');
+      throw ServerException();
+    }
+  }
+
+  Future addActiveCaptain(ActiveCaptainModel activeCaptainModel) async {
+    try {
+      final db = FirebaseFirestore.instance;
+      final captainId = activeCaptainModel.captainModel.captainId;
+      await db
+          .collection('activeCaptains')
+          .doc(captainId)
+          .set(activeCaptainModel.toJson());
+    } catch (e) {
+      debugPrint('addActiveCaptain :: Home remote repo :: Exception :: $e');
+      throw ServerException();
+    }
+  }
+
+  Future removeActiveCaptain(String captainId) async {
+    try {
+      final db = FirebaseFirestore.instance;
+      await db.collection('activeCaptains').doc(captainId).delete();
+    } catch (e) {
+      debugPrint('addActiveCaptain :: Home remote repo :: Exception :: $e');
       throw ServerException();
     }
   }

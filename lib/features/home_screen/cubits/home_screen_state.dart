@@ -94,3 +94,11 @@ class SearchPlaceServerFailureState extends HomeScreenState {
   @override
   List<Object> get props => [];
 }
+
+class HomeWithToastState extends HomeScreenState {
+  final String msg;
+  final ToastStates toastState;
+  const HomeWithToastState(this.msg, this.toastState);
+  @override
+  List<Object> get props => [msg, toastState];
+}

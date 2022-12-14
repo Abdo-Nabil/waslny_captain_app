@@ -7,9 +7,21 @@ import '../../../core/error/exceptions.dart';
 // - 'VGhpcyBpcyB0aGUgcHJlZml4IGZvciBCaWdJbnRlZ2Vy'
 // - 'VGhpcyBpcyB0aGUgcHJlZml4IGZvciBEb3VibGUu'
 
-class AuthLocalData {
+class GeneralLocalData {
   final SharedPreferences sharedPreferences;
-  AuthLocalData({
+  GeneralLocalData({
     required this.sharedPreferences,
   });
+
+  String? getString(String key) {
+    final String? result = sharedPreferences.getString(key);
+    return result;
+  }
+
+  Future setString(String key, String value) async {
+    final bool result = await sharedPreferences.setString(key, value);
+    if (!result) {
+      throw CacheSavingException();
+    }
+  }
 }

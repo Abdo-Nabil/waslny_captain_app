@@ -8,7 +8,7 @@ import 'package:waslny_captain/resources/app_strings.dart';
 
 import 'config/routes/app_routes.dart';
 import 'features/authentication/cubits/auth_cubit.dart';
-import 'features/general_cubit/general_cubit.dart';
+import 'features/general/cubits/general_cubit.dart';
 import 'features/home_screen/cubits/home_screen_cubit.dart';
 import 'features/home_screen/presentation/home_screen.dart';
 import 'features/localization/locale/app_localizations_setup.dart';
@@ -62,9 +62,9 @@ class MyApp extends StatelessWidget {
                     AppLocalizationsSetup.localizationsDelegates,
                 // home: const OtpScreen(phoneNumber: '1111522423'),
                 // home: const LoginScreen(),
-                // home: initialScreen,
+                home: initialScreen,
                 // home: const RegisterScreen(),
-                home: OnBoardingScreen(),
+                // home: OnBoardingScreen(),
                 // home: HomeScreen(),
               );
             },

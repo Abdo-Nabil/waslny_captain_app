@@ -56,7 +56,7 @@ Color chooseToastColor(ToastStates state) {
       color = Colors.red;
       break;
     case ToastStates.warning:
-      color = Colors.amber;
+      color = Colors.amber.shade900;
       break;
   }
 

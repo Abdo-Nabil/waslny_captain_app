@@ -68,6 +68,39 @@ class DialogHelper {
     );
   }
 
+  static Future messageWithActionsDialog(
+      BuildContext context, String msg, Function onOkButton) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(AppStrings.areYouSure.tr(context)),
+          content: Text(msg),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                AppStrings.cancel.tr(context),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await onOkButton();
+              },
+              child: Text(
+                AppStrings.ok.tr(context),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   //foe only String searches
   static Future selectWithSearchDialog(
     BuildContext context, {

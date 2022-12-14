@@ -91,7 +91,20 @@
   "userNotFound": "معذرة لا يوجد كابتن بالبيانات المدخلة",
   "wrongPassword": "معذرة كلمة المرور غير صحيحة",
   "mobileNumberInvalid": "رقم الهاتف غير صالح",
-  "passwordMustBe": "لابد ان تكون كلمة المرور 5 فأكثر"
+  "passwordMustBe": "لابد ان تكون كلمة المرور 5 فأكثر",
+
+  "youAreOnlineNow": "انت الان جاهز!",
+  "youAreOfflineNow": "أنت الان في وضع الراحة!",
+  "startWorking": "ابدأ العمل",
+  "wantToStopWorking": "هل تود التوقف عن العمل؟",
+  "wantToStartWorking": "هل تود البدأ في العمل؟",
+  "working": "نشط",
+  "resting": "متوقف",
+  "areYouSure": "هل أنت متأكد؟",
+  "cancel": "الغاء"
+
+
+
 
 
 }

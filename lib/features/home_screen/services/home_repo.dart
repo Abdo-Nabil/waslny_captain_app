@@ -3,12 +3,14 @@ import 'package:dartz/dartz.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:waslny_captain/core/error/exceptions.dart';
 import 'package:waslny_captain/core/error/failures.dart';
+import 'package:waslny_captain/features/authentication/services/models/captain_model.dart';
 import 'package:waslny_captain/features/home_screen/services/models/direction_model.dart';
 import 'package:waslny_captain/features/home_screen/services/models/place_model.dart';
 import 'package:waslny_captain/features/home_screen/services/home_remote_data.dart';
 
 import '../../../core/network/network_info.dart';
 import 'home_local_data.dart';
+import 'models/active_captain_model.dart';
 
 class HomeRepo {
   final HomeRemoteData homeRemoteData;
@@ -90,6 +92,57 @@ class HomeRepo {
         return Left(ServerFailure());
       } catch (e) {
         debugPrint('Home Repo :: getDirections Exception :: $e');
+        return Left(ServerFailure());
+      }
+      //
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
+  Future<Either<Failure, CaptainModel>> getCaptainInformation(
+      String captainId) async {
+    if (await networkInfo.isConnected) {
+      //
+      try {
+        final result = await homeRemoteData.getCaptainInformation(captainId);
+        return Right(result);
+      } catch (e) {
+        debugPrint('Home Repo :: getCaptainInformation Exception :: $e');
+        return Left(ServerFailure());
+      }
+      //
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
+  Future<Either<Failure, Unit>> addActiveCaptain(
+      ActiveCaptainModel activeCaptainModel) async {
+    if (await networkInfo.isConnected) {
+      //
+      try {
+        final result =
+            await homeRemoteData.addActiveCaptain(activeCaptainModel);
+        return Future.value(const Right(unit));
+      } catch (e) {
+        debugPrint('Home Repo :: addActiveCaptain Exception :: $e');
+        return Left(ServerFailure());
+      }
+      //
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
+  Future<Either<Failure, Unit>> removeActiveCaptain(String captainId) async {
+    if (await networkInfo.isConnected) {
+      //
+      try {
+        final result = await homeRemoteData.removeActiveCaptain(captainId);
+        return Future.value(const Right(unit));
+      } catch (e) {
+        debugPrint('Home Repo :: removeActiveCaptain Exception :: $e');
         return Left(ServerFailure());
       }
       //

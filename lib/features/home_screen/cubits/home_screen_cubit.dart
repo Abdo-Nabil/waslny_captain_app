@@ -1,23 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:waslny_captain/core/error/failures.dart';
 import 'package:waslny_captain/core/extensions/string_extension.dart';
+import 'package:waslny_captain/core/util/toast_helper.dart';
+import 'package:waslny_captain/features/authentication/services/auth_repo.dart';
+import 'package:waslny_captain/features/authentication/services/models/captain_model.dart';
+import 'package:waslny_captain/features/general/services/general_repo.dart';
 import 'package:waslny_captain/features/home_screen/services/home_repo.dart';
 import 'package:waslny_captain/resources/constants_manager.dart';
 import 'package:waslny_captain/resources/image_assets.dart';
 
+import '../../../core/error/exceptions.dart';
 import '../../../resources/app_strings.dart';
 import '../services/home_local_data.dart';
+import '../services/models/active_captain_model.dart';
 import '../services/models/direction_model.dart';
 
 part 'home_screen_state.dart';
 
 class HomeScreenCubit extends Cubit<HomeScreenState> {
   final HomeRepo homeRepo;
-  HomeScreenCubit(this.homeRepo) : super(HomeScreenInitial());
+  final GeneralRepo generalRepo;
+  HomeScreenCubit(this.homeRepo, this.generalRepo) : super(HomeScreenInitial());
 
   LatLng? myInitialLatLng;
   late LatLng myCurrentLatLng;
@@ -34,6 +44,8 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   late BitmapDescriptor markerCustomIcon;
   TextEditingController? toController;
   TextEditingController? fromController;
+  late CaptainModel captainInformation;
+  bool isOnline = false;
 
   getIsOrigin() {
     return _isOrigin;
@@ -280,6 +292,82 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
       //request  car
     }
   }
+
+  getCaptainInformation() async {
+    final either1 = generalRepo.getString(AppStrings.storedId);
+    either1.fold(
+      (failure) {
+        //to implement failure
+        emit(const HomeWithToastState(
+            AppStrings.cannotGetLocalCaptainInfo, ToastStates.error));
+      },
+      (success) async {
+        // emit(HomeLoadingState());
+        final either2 = await homeRepo.getCaptainInformation(success!);
+        either2.fold(
+          (failure) {
+            //to implement failure
+            emit(const HomeWithToastState(
+                AppStrings.cannotGetCaptainInfo, ToastStates.error));
+          },
+          (success) {
+            captainInformation = success;
+            // emit(HomeSuccessWithPopState());
+          },
+        );
+      },
+    );
+  }
+
+  Future addActiveCaptain() async {
+    //get current captain location
+    final either1 = await homeRepo.getMyLocation();
+    //
+    either1.fold((failure) {
+      emit(const HomeWithToastState(
+          AppStrings.someThingWentWrong, ToastStates.error));
+    }, (success) async {
+      //send the request for adding active captain
+      final either2 = await homeRepo.addActiveCaptain(ActiveCaptainModel(
+          captainModel: captainInformation, latLng: success));
+      //
+      either2.fold(
+        (failure) {
+          //to implement failure
+          emit(const HomeWithToastState(
+              AppStrings.someThingWentWrong, ToastStates.error));
+        },
+        (success) {
+          //to implement success
+          isOnline = true;
+          emit(const HomeWithToastState(
+              AppStrings.youAreOnlineNow, ToastStates.success));
+        },
+      );
+    });
+  }
+
+  Future removeActiveCaptain() async {
+    //send the request for adding active captain
+    final either =
+        await homeRepo.removeActiveCaptain(captainInformation.captainId!);
+    //
+    either.fold(
+      (failure) {
+        //to implement failure
+        emit(const HomeWithToastState(
+            AppStrings.someThingWentWrong, ToastStates.error));
+      },
+      (success) {
+        //to implement success
+        isOnline = false;
+        emit(const HomeWithToastState(
+            AppStrings.youAreOfflineNow, ToastStates.warning));
+      },
+    );
+  }
+
+  //-------------------------------------------------------------------------
 
   static const LatLng cairoLatLng = LatLng(
     31.2357116,

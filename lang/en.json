@@ -88,7 +88,23 @@
   "emailInUse": "Sorry, your email is already used",
   "userNotFound": "Sorry, no captain found with these data",
   "wrongPassword": "Sorry, your password is wrong",
-  "passwordMustBe": "Password must be 5 or more"
+  "passwordMustBe": "Password must be 5 or more",
+
+  "youAreOnlineNow": "You are online now!",
+  "youAreOfflineNow": "You are offline now!",
+  "startWorking": "Start working",
+  "cannotGetLocalCaptainInfo": "Can't get local captain information",
+  "cannotGetCaptainInfo": "Can't get captain information",
+  "wantToStopWorking": "Do you want to stop working?",
+  "wantToStartWorking": "Do you want to start working?",
+  "working": "Working",
+  "resting": "Resting",
+  "areYouSure": "Are you sure?",
+  "cancel": "Cancel"
+
+
+
+
 
 
 }
