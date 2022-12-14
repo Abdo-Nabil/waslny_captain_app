@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,12 +13,13 @@ import 'package:waslny_captain/features/authentication/presentation/widgets/cust
 import 'package:waslny_captain/features/authentication/services/models/captain_model.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_form_container.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/map_container.dart';
-import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_hamb_icon.dart';
+import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_status_icon.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_loc_icon.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_yellow_chip.dart';
 import 'package:waslny_captain/features/home_screen/services/models/active_captain_model.dart';
 
 import '../../../resources/app_strings.dart';
+import '../../../resources/constants_manager.dart';
 import '../cubits/home_screen_cubit.dart';
 import '../services/models/direction_model.dart';
 
@@ -32,12 +35,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //
+
+  Timer? timer;
   @override
   void initState() {
     ToastHelper.initializeToast(context);
+    //
+    timer = Timer.periodic(
+        const Duration(
+            seconds: ConstantsManager.captainRefreshLatLngOnFirebase),
+        (timer) async {
+      updateCaptainLocation();
+    });
+    //
     HomeScreenCubit.getIns(context).getMyLocationStream();
     HomeScreenCubit.getIns(context).getCaptainInformation();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   //
@@ -158,5 +177,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  updateCaptainLocation() async {
+    if (HomeScreenCubit.getIns(context).isOnline) {
+      await HomeScreenCubit.getIns(context).addActiveCaptain(showToast: false);
+    }
   }
 }

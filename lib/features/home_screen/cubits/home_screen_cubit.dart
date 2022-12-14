@@ -46,6 +46,7 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   TextEditingController? fromController;
   late CaptainModel captainInformation;
   bool isOnline = false;
+  LatLng captainCurrentLocation = ConstantsManager.nullLatLng;
 
   getIsOrigin() {
     return _isOrigin;
@@ -319,7 +320,7 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
     );
   }
 
-  Future addActiveCaptain() async {
+  Future addActiveCaptain({bool showToast = true}) async {
     //get current captain location
     final either1 = await homeRepo.getMyLocation();
     //
@@ -327,23 +328,29 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
       emit(const HomeWithToastState(
           AppStrings.someThingWentWrong, ToastStates.error));
     }, (success) async {
-      //send the request for adding active captain
-      final either2 = await homeRepo.addActiveCaptain(ActiveCaptainModel(
-          captainModel: captainInformation, latLng: success));
-      //
-      either2.fold(
-        (failure) {
-          //to implement failure
-          emit(const HomeWithToastState(
-              AppStrings.someThingWentWrong, ToastStates.error));
-        },
-        (success) {
-          //to implement success
-          isOnline = true;
-          emit(const HomeWithToastState(
-              AppStrings.youAreOnlineNow, ToastStates.success));
-        },
-      );
+      //To reduce # requests in case of refreshing every 3 minutes
+      if (captainCurrentLocation != success) {
+        captainCurrentLocation = success;
+        //send the request for adding active captain
+        final either2 = await homeRepo.addActiveCaptain(ActiveCaptainModel(
+            captainModel: captainInformation, latLng: success));
+        //
+        either2.fold(
+          (failure) {
+            //to implement failure
+            emit(const HomeWithToastState(
+                AppStrings.someThingWentWrong, ToastStates.error));
+          },
+          (success) {
+            //to implement success
+            isOnline = true;
+            showToast
+                ? emit(const HomeWithToastState(
+                    AppStrings.youAreOnlineNow, ToastStates.success))
+                : () {};
+          },
+        );
+      }
     });
   }
 
@@ -361,6 +368,7 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
       (success) {
         //to implement success
         isOnline = false;
+        captainCurrentLocation = ConstantsManager.nullLatLng;
         emit(const HomeWithToastState(
             AppStrings.youAreOfflineNow, ToastStates.warning));
       },

@@ -1,3 +1,5 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class ConstantsManager {
   static const int splashDelay = 2;
   static const int sliderAnimationTime = 300;
@@ -10,4 +12,6 @@ class ConstantsManager {
   static const int searchDelay = 2000;
   static const int locationTimeLimit = 10;
   static const int minDistanceToUpdate = 5;
+  static const LatLng nullLatLng = LatLng(-100.0, -200.0);
+  static const int captainRefreshLatLngOnFirebase = 90;
 }
