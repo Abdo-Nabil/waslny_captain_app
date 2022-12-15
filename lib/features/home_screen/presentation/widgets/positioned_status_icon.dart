@@ -22,7 +22,7 @@ class PositionedStatusIcon extends StatelessWidget {
         LocalizationCubit.getIns(context).isEnglishLocale();
     //
     final isOnline =
-        BlocProvider.of<HomeScreenCubit>(context, listen: true).isOnline;
+        BlocProvider.of<HomeScreenCubit>(context, listen: true).isOnlineCaptain;
     return Positioned(
       left: isEnglishLocale ? AppPadding.p16 : null,
       right: isEnglishLocale ? null : AppPadding.p16,

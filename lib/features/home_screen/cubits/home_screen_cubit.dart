@@ -45,7 +45,7 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   TextEditingController? toController;
   TextEditingController? fromController;
   late CaptainModel captainInformation;
-  bool isOnline = false;
+  bool isOnlineCaptain = false;
   LatLng captainCurrentLocation = ConstantsManager.nullLatLng;
 
   getIsOrigin() {
@@ -343,7 +343,7 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
           },
           (success) {
             //to implement success
-            isOnline = true;
+            isOnlineCaptain = true;
             showToast
                 ? emit(const HomeWithToastState(
                     AppStrings.youAreOnlineNow, ToastStates.success))
@@ -367,7 +367,7 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
       },
       (success) {
         //to implement success
-        isOnline = false;
+        isOnlineCaptain = false;
         captainCurrentLocation = ConstantsManager.nullLatLng;
         emit(const HomeWithToastState(
             AppStrings.youAreOfflineNow, ToastStates.warning));

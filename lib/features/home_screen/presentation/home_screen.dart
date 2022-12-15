@@ -180,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   updateCaptainLocation() async {
-    if (HomeScreenCubit.getIns(context).isOnline) {
+    if (HomeScreenCubit.getIns(context).isOnlineCaptain) {
       await HomeScreenCubit.getIns(context).addActiveCaptain(showToast: false);
     }
   }
