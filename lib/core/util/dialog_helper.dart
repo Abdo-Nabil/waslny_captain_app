@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:waslny_captain/core/extensions/context_extension.dart';
 import 'package:waslny_captain/core/extensions/string_extension.dart';
+import 'package:waslny_captain/core/widgets/add_horizontal_space.dart';
+import 'package:waslny_captain/core/widgets/add_vertical_space.dart';
 
 import '../../resources/app_strings.dart';
 
@@ -101,7 +103,87 @@ class DialogHelper {
     );
   }
 
-  //foe only String searches
+  static Future notificationDialog(
+      BuildContext context, Map data, Function onOkButton) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title:
+              Text('${data['name']} ${AppStrings.xRequestsATrip.tr(context)}'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.location_on_outlined),
+                  const AddHorizontalSpace(4),
+                  Expanded(
+                    child: Text.rich(
+                      TextSpan(
+                        text: AppStrings.from,
+                        style: const TextStyle(color: Colors.red),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: ': ${data['origin']}',
+                              style: Theme.of(context).textTheme.bodyText2),
+                        ],
+                      ),
+                      // '${AppStrings.from}: $origin',
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.location_pin),
+                  const AddHorizontalSpace(4),
+                  Expanded(
+                    child: Text.rich(
+                      TextSpan(
+                        text: AppStrings.to,
+                        style: const TextStyle(color: Colors.greenAccent),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: ': ${data['destination']}',
+                              style: Theme.of(context).textTheme.bodyText2),
+                        ],
+                      ),
+                      // '${AppStrings.from}: $origin',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                AppStrings.cancel.tr(context),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await onOkButton();
+              },
+              child: Text(
+                AppStrings.confirm.tr(context),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //for only String searches
   static Future selectWithSearchDialog(
     BuildContext context, {
     required String title,

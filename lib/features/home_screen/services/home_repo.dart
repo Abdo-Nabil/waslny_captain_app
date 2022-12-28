@@ -100,12 +100,11 @@ class HomeRepo {
     }
   }
 
-  Future<Either<Failure, CaptainModel>> getCaptainInformation(
-      String captainId) async {
+  Future<Either<Failure, CaptainModel>> getCaptainInformation() async {
     if (await networkInfo.isConnected) {
       //
       try {
-        final result = await homeRemoteData.getCaptainInformation(captainId);
+        final result = await homeRemoteData.getCaptainInformation();
         return Right(result);
       } catch (e) {
         debugPrint('Home Repo :: getCaptainInformation Exception :: $e');

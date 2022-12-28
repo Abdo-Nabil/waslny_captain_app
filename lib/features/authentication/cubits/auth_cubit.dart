@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -28,7 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
   bool showLoginButton = false;
   bool showResendButton = false;
   //
-  late final UserCredential userCred;
+  // late final UserCredential userCred;
 
   static AuthCubit getIns(context) {
     return BlocProvider.of<AuthCubit>(context);
@@ -96,25 +97,13 @@ class AuthCubit extends Cubit<AuthState> {
         final String captainId = credential.user!.uid;
         await generalRepo.setString(AppStrings.storedId, captainId);
         //
-        final either2 = await authRepo.createCaptainAfterSign(
-            captainModel.copyWith(captainId: captainId));
-        either2.fold(
-          (failure) async {
-            _handleFailure(failure);
-          },
-          (success) async {
-            final either3 = await generalRepo.setString(
-                AppStrings.storedToken, '${credential.credential?.token}');
-            either3.fold(
-              (failure) {
-                _handleFailure(failure);
-              },
-              (success) {
-                emit(EndLoadingToHomeScreen());
-              },
-            );
-          },
-        );
+        final temp1 = await _saveToken(credential);
+        final temp2 = await _saveFcmToken();
+        if (temp1 && temp2) {
+          emit(EndLoadingToHomeScreen());
+        } else {
+          emit(EndLoadingStateWithError(AppStrings.someThingWentWrong));
+        }
       },
     );
   }
@@ -134,19 +123,15 @@ class AuthCubit extends Cubit<AuthState> {
           final String captainId = credential.user!.uid;
           await generalRepo.setString(AppStrings.storedId, captainId);
           //
-          final either2 = await generalRepo.setString(
-              AppStrings.storedToken, '${credential.credential?.token}');
-          either2.fold(
-            (failure) {
-              _handleFailure(failure);
-            },
-            (success) {
-              emit(EndLoadingToHomeScreen());
-            },
-          );
+          final temp1 = await _saveToken(credential);
+          final temp2 = await _saveFcmToken();
+          if (temp1 && temp2) {
+            emit(EndLoadingToHomeScreen());
+          } else {
+            emit(EndLoadingStateWithError(AppStrings.someThingWentWrong));
+          }
         },
       );
-      //
     }
   }
 
@@ -201,6 +186,34 @@ class AuthCubit extends Cubit<AuthState> {
     return null;
   }
 
+  Future<bool> _saveToken(UserCredential credential) async {
+    final token = await credential.user?.getIdToken();
+    if (token != null) {
+      final either = await generalRepo.setString(AppStrings.storedToken, token);
+      return either.fold((failure) {
+        _handleFailure(failure);
+        return false;
+      }, (success) {
+        return true;
+      });
+    } else {
+      debugPrint('The token is nullllllllllll!');
+      return false;
+    }
+  }
+
+  Future<bool> _saveFcmToken() async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    debugPrint('FCM token !!!!!!  $fcmToken');
+    if (fcmToken != null) {
+      await generalRepo.setString(AppStrings.fcmToken, fcmToken);
+      return true;
+    } else {
+      return false;
+    }
+    // generalRepo.
+  }
+
   // Future listenForSms(BuildContext context, GlobalKey<FormState> formKey,
   //     TextEditingController otpController, mounted) async {
   //   try {
@@ -245,21 +258,6 @@ class AuthCubit extends Cubit<AuthState> {
   //   );
   // }
 
-  // Future<bool> _saveToken() async {
-  //   final token = await userCred.user?.getIdToken();
-  //   if (token != null) {
-  //     final either = await authRepo.setToken(token);
-  //     return either.fold((failure) {
-  //       handleFailure(failure);
-  //       return false;
-  //     }, (success) {
-  //       return true;
-  //     });
-  //   } else {
-  //     debugPrint('The token is nullllllllllll!');
-  //     return false;
-  //   }
-  // }
   //
   // Future verifySmsCode(String smsCode, GlobalKey<FormState> formKey) async {
   //   if (formKey.currentState!.validate()) {

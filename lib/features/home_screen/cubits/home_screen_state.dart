@@ -100,5 +100,5 @@ class HomeWithToastState extends HomeScreenState {
   final ToastStates toastState;
   const HomeWithToastState(this.msg, this.toastState);
   @override
-  List<Object> get props => [msg, toastState];
+  List<Object> get props => [identityHashCode(this)];
 }

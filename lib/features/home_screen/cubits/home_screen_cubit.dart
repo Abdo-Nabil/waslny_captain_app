@@ -295,29 +295,25 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   }
 
   getCaptainInformation() async {
-    final either1 = generalRepo.getString(AppStrings.storedId);
-    either1.fold(
-      (failure) {
-        //to implement failure
-        emit(const HomeWithToastState(
-            AppStrings.cannotGetLocalCaptainInfo, ToastStates.error));
-      },
-      (success) async {
-        // emit(HomeLoadingState());
-        final either2 = await homeRepo.getCaptainInformation(success!);
-        either2.fold(
-          (failure) {
-            //to implement failure
-            emit(const HomeWithToastState(
-                AppStrings.cannotGetCaptainInfo, ToastStates.error));
-          },
-          (success) {
-            captainInformation = success;
-            // emit(HomeSuccessWithPopState());
-          },
-        );
-      },
-    );
+    final storedId = generalRepo.getString(AppStrings.storedId);
+    if (storedId != null) {
+      // emit(HomeLoadingState());
+      final either2 = await homeRepo.getCaptainInformation();
+      either2.fold(
+        (failure) {
+          //to implement failure
+          emit(const HomeWithToastState(
+              AppStrings.cannotGetCaptainInfo, ToastStates.error));
+        },
+        (success) {
+          captainInformation = success;
+          // emit(HomeSuccessWithPopState());
+        },
+      );
+    } else {
+      emit(const HomeWithToastState(
+          AppStrings.cannotGetLocalCaptainInfo, ToastStates.error));
+    }
   }
 
   Future addActiveCaptain({bool showToast = true}) async {
@@ -325,31 +321,39 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
     final either1 = await homeRepo.getMyLocation();
     //
     either1.fold((failure) {
-      emit(const HomeWithToastState(
-          AppStrings.someThingWentWrong, ToastStates.error));
-    }, (success) async {
+      _showErrorToast();
+    }, (latLng) async {
       //To reduce # requests in case of refreshing every 3 minutes
-      if (captainCurrentLocation != success) {
-        captainCurrentLocation = success;
+      if (captainCurrentLocation != latLng) {
+        captainCurrentLocation = latLng;
         //send the request for adding active captain
-        final either2 = await homeRepo.addActiveCaptain(ActiveCaptainModel(
-            captainModel: captainInformation, latLng: success));
-        //
-        either2.fold(
-          (failure) {
-            //to implement failure
-            emit(const HomeWithToastState(
-                AppStrings.someThingWentWrong, ToastStates.error));
-          },
-          (success) {
-            //to implement success
-            isOnlineCaptain = true;
-            showToast
-                ? emit(const HomeWithToastState(
-                    AppStrings.youAreOnlineNow, ToastStates.success))
-                : () {};
-          },
-        );
+        final fcmDeviceToken = generalRepo.getString(AppStrings.fcmToken);
+        if (fcmDeviceToken != null) {
+          final either2 = await homeRepo.addActiveCaptain(
+            ActiveCaptainModel(
+              captainModel: captainInformation,
+              latLng: latLng,
+              deviceToken: fcmDeviceToken,
+            ),
+          );
+          //
+          either2.fold(
+            (failure) {
+              //to implement failure
+              _showErrorToast();
+            },
+            (success) {
+              //to implement success
+              isOnlineCaptain = true;
+              showToast
+                  ? emit(const HomeWithToastState(
+                      AppStrings.youAreOnlineNow, ToastStates.success))
+                  : () {};
+            },
+          );
+        } else {
+          _showErrorToast();
+        }
       }
     });
   }
@@ -362,8 +366,7 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
     either.fold(
       (failure) {
         //to implement failure
-        emit(const HomeWithToastState(
-            AppStrings.someThingWentWrong, ToastStates.error));
+        _showErrorToast();
       },
       (success) {
         //to implement success
@@ -387,6 +390,9 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   );
   //
 
+  _showErrorToast() {
+    emit(HomeWithToastState(AppStrings.someThingWentWrong, ToastStates.error));
+  }
 //
   /* Future getMyLocation() async {
     //

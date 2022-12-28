@@ -18,9 +18,9 @@ class GeneralRepo {
   });
 
   //-------------Auth local data--------------------
-  Either<Failure, String?> getString(String key) {
+  String? getString(String key) {
     final String? result = generalLocalData.getString(key);
-    return Right(result);
+    return result;
   }
 
   Future<Either<Failure, Unit>> setString(String key, String value) async {

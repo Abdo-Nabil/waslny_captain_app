@@ -57,7 +57,7 @@ class BuildCaptainStatus extends StatelessWidget {
       child: Container(
         height: AppPadding.p65,
         width: AppPadding.p80,
-        padding: const EdgeInsets.all(AppPadding.p12),
+        padding: const EdgeInsets.all(AppPadding.p8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppPadding.p20),
           color: ColorsManager.greyBlack,
@@ -70,7 +70,7 @@ class BuildCaptainStatus extends StatelessWidget {
                   : AppStrings.resting.tr(context),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            const AddVerticalSpace(8),
+            const AddVerticalSpace(4),
             Divider(
               thickness: 4,
               color: isOnline ? Colors.green : Colors.red,

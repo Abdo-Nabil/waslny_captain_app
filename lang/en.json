@@ -100,7 +100,9 @@
   "working": "Working",
   "resting": "Resting",
   "areYouSure": "Are you sure?",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "xRequestsATrip": "requests a trip",
+  "confirm": "Confirm"
 
 
 

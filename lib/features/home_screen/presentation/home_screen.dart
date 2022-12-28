@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -26,6 +29,16 @@ import '../services/models/direction_model.dart';
 //TODO: After login you must get user(captain) data if any field of non-nullable fields are null,
 //this means that the user account has been created in Auth section, but not in the fireStore (May be connection lost), so request the user to continue entering the data.
 
+///
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  debugPrint(
+      "#################Handling a background message: ${message.messageId}");
+}
+
+///
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -40,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     ToastHelper.initializeToast(context);
+    HomeScreenCubit.getIns(context).getCaptainInformation();
     //
     timer = Timer.periodic(
         const Duration(
@@ -50,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //
     HomeScreenCubit.getIns(context).getMyLocationStream();
     HomeScreenCubit.getIns(context).getCaptainInformation();
+    initFirebaseMessaging();
     super.initState();
   }
 
@@ -144,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   : Container(),
               const PositionedLocIcon(),
               const PositionedStatusIcon(),
-              const PositionedFormContainer(),
+              // const PositionedFormContainer(),
               // Container(
               //   color: Colors.black.withOpacity(0.7),
               //   // height: 200,
@@ -183,5 +198,40 @@ class _HomeScreenState extends State<HomeScreen> {
     if (HomeScreenCubit.getIns(context).isOnlineCaptain) {
       await HomeScreenCubit.getIns(context).addActiveCaptain(showToast: false);
     }
+  }
+
+  initFirebaseMessaging() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    // request permissions
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    debugPrint('User granted permission:::::: ${settings.authorizationStatus}');
+
+    // In foreground
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        debugPrint('Got a message whilst in the foreground!');
+        DialogHelper.notificationDialog(context, message.data, () {});
+      },
+    );
+
+    //handle user click on the notification
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (RemoteMessage message) {
+        debugPrint('Got a message whilst in the background!');
+        DialogHelper.notificationDialog(context, message.data, () {});
+      },
+    );
+
+    // In background or terminated
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 }

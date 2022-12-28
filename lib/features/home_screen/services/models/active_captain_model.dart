@@ -5,13 +5,19 @@ import 'package:waslny_captain/features/authentication/services/models/captain_m
 class ActiveCaptainModel extends Equatable {
   final CaptainModel captainModel;
   final LatLng latLng;
+  final String deviceToken;
 
-  const ActiveCaptainModel({required this.captainModel, required this.latLng});
+  const ActiveCaptainModel({
+    required this.captainModel,
+    required this.latLng,
+    required this.deviceToken,
+  });
 
   factory ActiveCaptainModel.fromJson(Map<String, dynamic> map) {
     return ActiveCaptainModel(
       captainModel: CaptainModel.fromJson(map['captainModel']),
       latLng: LatLng(map['latLng']['lat'], map['latLng']['lng']),
+      deviceToken: map['deviceToken'],
     );
   }
 
@@ -19,6 +25,7 @@ class ActiveCaptainModel extends Equatable {
     return {
       'captainModel': captainModel.toJson(),
       'latLng': {'lat': latLng.latitude, 'lng': latLng.longitude},
+      'deviceToken': deviceToken,
     };
   }
 

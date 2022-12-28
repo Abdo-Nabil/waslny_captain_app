@@ -5,6 +5,7 @@ class AppStrings {
   static const String isLightTheme = 'isLightTheme';
   static const String storedToken = 'storedToken';
   static const String storedId = 'storedId';
+  static const String fcmToken = 'fcmToken';
 
   //---------------On boarding
   static const String done = 'done';
@@ -111,6 +112,8 @@ class AppStrings {
   static const resting = "resting";
   static const areYouSure = "areYouSure";
   static const cancel = "cancel";
+  static const xRequestsATrip = "xRequestsATrip";
+  static const confirm = "confirm";
 
   //
   //

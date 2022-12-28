@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:waslny_captain/core/error/exceptions.dart';
@@ -72,8 +73,9 @@ class HomeRemoteData {
     }
   }
 
-  Future<CaptainModel> getCaptainInformation(String captainId) async {
+  Future<CaptainModel> getCaptainInformation() async {
     try {
+      final captainId = FirebaseAuth.instance.currentUser?.uid;
       final db = FirebaseFirestore.instance;
       final temp = await db.collection('captains').doc(captainId).get();
       final Map<String, dynamic>? map = temp.data();
