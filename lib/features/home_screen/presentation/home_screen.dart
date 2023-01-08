@@ -20,6 +20,7 @@ import 'package:waslny_captain/features/home_screen/presentation/widgets/positio
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_loc_icon.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_yellow_chip.dart';
 import 'package:waslny_captain/features/home_screen/services/models/active_captain_model.dart';
+import 'package:waslny_captain/features/home_screen/services/models/message_type.dart';
 
 import '../../../resources/app_strings.dart';
 import '../../../resources/constants_manager.dart';
@@ -29,16 +30,14 @@ import '../services/models/direction_model.dart';
 //TODO: After login you must get user(captain) data if any field of non-nullable fields are null,
 //this means that the user account has been created in Auth section, but not in the fireStore (May be connection lost), so request the user to continue entering the data.
 
-///
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
-  debugPrint(
-      "#################Handling a background message: ${message.messageId}");
+  debugPrint('############ Background message!!!');
 }
 
-///
+//
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -49,13 +48,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   //
 
-  Timer? timer;
+  Timer? refreshCaptainLocationTimer;
   @override
   void initState() {
     ToastHelper.initializeToast(context);
     HomeScreenCubit.getIns(context).getCaptainInformation();
     //
-    timer = Timer.periodic(
+    refreshCaptainLocationTimer = Timer.periodic(
         const Duration(
             seconds: ConstantsManager.captainRefreshLatLngOnFirebase),
         (timer) async {
@@ -70,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    timer?.cancel();
+    refreshCaptainLocationTimer?.cancel();
     super.dispose();
   }
 
@@ -219,7 +218,10 @@ class _HomeScreenState extends State<HomeScreen> {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
         debugPrint('Got a message whilst in the foreground!');
-        DialogHelper.notificationDialog(context, message.data, () {});
+        DialogHelper.notificationDialog(context, message.data,
+            ConstantsManager.userAndCaptainRequestTimeDuration, () {
+          //implement me !!!!!!
+        }, () {});
       },
     );
 
@@ -227,7 +229,28 @@ class _HomeScreenState extends State<HomeScreen> {
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {
         debugPrint('Got a message whilst in the background!');
-        DialogHelper.notificationDialog(context, message.data, () {});
+        final bool isRequestTimeOut = DateTime.now().isAfter(message.sentTime!
+            .add(const Duration(
+                seconds: ConstantsManager.userAndCaptainRequestTimeDuration)));
+        if (isRequestTimeOut) {
+          DialogHelper.requestTimeOutDialog(context);
+        } else {
+          // if (message.data['messageType'] ==
+          //     MessageType.captainToUserFirstRequest.name) {
+          // }
+          var remainingTime = message.sentTime!
+              .add(const Duration(
+                  seconds: ConstantsManager.userAndCaptainRequestTimeDuration))
+              .difference(DateTime.now())
+              .inSeconds;
+          DialogHelper.notificationDialog(
+            context,
+            message.data,
+            remainingTime,
+            () {},
+            () {},
+          );
+        }
       },
     );
 

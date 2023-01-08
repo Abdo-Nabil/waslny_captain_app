@@ -3,7 +3,9 @@ import 'package:waslny_captain/core/extensions/context_extension.dart';
 import 'package:waslny_captain/core/extensions/string_extension.dart';
 import 'package:waslny_captain/core/widgets/add_horizontal_space.dart';
 import 'package:waslny_captain/core/widgets/add_vertical_space.dart';
+import 'package:waslny_captain/features/authentication/presentation/widgets/timer_widget.dart';
 
+import '../../features/home_screen/presentation/widgets/timer_widget.dart';
 import '../../resources/app_strings.dart';
 
 class DialogHelper {
@@ -33,6 +35,26 @@ class DialogHelper {
         return AlertDialog(
           title: Text(AppStrings.alert.tr(context)),
           content: Text(msg),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(AppStrings.ok.tr(context)))
+          ],
+        );
+      },
+    );
+  }
+
+  static Future requestTimeOutDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(AppStrings.requestTimeOut.tr(context)),
+          content: Text(AppStrings.requestTerminated.tr(context)),
           actions: [
             TextButton(
                 onPressed: () {
@@ -104,7 +126,12 @@ class DialogHelper {
   }
 
   static Future notificationDialog(
-      BuildContext context, Map data, Function onOkButton) {
+    BuildContext context,
+    Map data,
+    int duration,
+    Function onOkButton,
+    Function onCancelButton,
+  ) {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -157,12 +184,16 @@ class DialogHelper {
                   ),
                 ],
               ),
+              TimerWidget(
+                duration: duration,
+              ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
+                await onCancelButton();
               },
               child: Text(
                 AppStrings.cancel.tr(context),

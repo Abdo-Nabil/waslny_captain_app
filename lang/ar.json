@@ -103,7 +103,10 @@
   "areYouSure": "هل أنت متأكد؟",
   "cancel": "الغاء",
   "xRequestsATrip": "يطلب رحلة",
-  "confirm": "موافق"
+  "confirm": "موافق",
+  "requestTimeOut": "انتهى وقت الطلب ",
+  "requestTerminated": "تم انهاء الطلب!"
+
 
 
 

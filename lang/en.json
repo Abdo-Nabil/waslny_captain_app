@@ -102,7 +102,9 @@
   "areYouSure": "Are you sure?",
   "cancel": "Cancel",
   "xRequestsATrip": "requests a trip",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "requestTimeOut": "Request time out",
+  "requestTerminated": "Request has been terminated!"
 
 
 

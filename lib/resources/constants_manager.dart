@@ -14,4 +14,5 @@ class ConstantsManager {
   static const int minDistanceToUpdate = 5;
   static const LatLng nullLatLng = LatLng(-100.0, -200.0);
   static const int captainRefreshLatLngOnFirebase = 90;
+  static const int userAndCaptainRequestTimeDuration = 15;
 }

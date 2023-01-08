@@ -114,6 +114,8 @@ class AppStrings {
   static const cancel = "cancel";
   static const xRequestsATrip = "xRequestsATrip";
   static const confirm = "confirm";
+  static const requestTimeOut = "requestTimeOut";
+  static const requestTerminated = "requestTerminated";
 
   //
   //
