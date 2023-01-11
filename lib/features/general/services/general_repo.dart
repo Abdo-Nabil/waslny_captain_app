@@ -31,4 +31,13 @@ class GeneralRepo {
       return Left(CacheSavingFailure());
     }
   }
+
+  Future<Either<Failure, Unit>> callNumber(String phoneNumber) async {
+    try {
+      await generalLocalData.callNumber(phoneNumber);
+      return Future.value(const Right(unit));
+    } catch (e) {
+      return Left(CallNumberFailure());
+    }
+  }
 }

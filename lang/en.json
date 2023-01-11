@@ -97,14 +97,16 @@
   "cannotGetCaptainInfo": "Can't get captain information",
   "wantToStopWorking": "Do you want to stop working?",
   "wantToStartWorking": "Do you want to start working?",
-  "working": "Working",
-  "resting": "Resting",
+  "working": "Work",
+  "resting": "Rest",
   "areYouSure": "Are you sure?",
   "cancel": "Cancel",
   "xRequestsATrip": "requests a trip",
   "confirm": "Confirm",
   "requestTimeOut": "Request time out",
-  "requestTerminated": "Request has been terminated!"
+  "requestTerminated": "Request has been terminated!",
+  "callNow": "Call Now",
+  "reject": "Reject"
 
 
 

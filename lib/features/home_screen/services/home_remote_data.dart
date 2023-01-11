@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 import '../../authentication/services/models/captain_model.dart';
 import '../../authentication/services/models/captain_model.dart';
 import 'models/direction_model.dart';
+import 'models/message_type.dart';
 
 class HomeRemoteData {
   final http.Client client;
@@ -107,6 +108,65 @@ class HomeRemoteData {
       await db.collection('activeCaptains').doc(captainId).delete();
     } catch (e) {
       debugPrint('addActiveCaptain :: Home remote repo :: Exception :: $e');
+      throw ServerException();
+    }
+  }
+
+  Future sendConfirmResponse(
+      String userDeviceToken, LatLng captainCurrentLocation) async {
+    final response = await client.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      headers: <String, String>{
+        'content-Type': 'application/json',
+        'Authorization': 'key=$fcmServerKey',
+      },
+      body: jsonEncode(
+        {
+          'to': userDeviceToken,
+          'priority': 'high',
+          // 'notification': {
+          //   'title': 'Are you ready? ',
+          //   'body': 'The captain is in the way to you!',
+          // },
+          'data': {
+            'messageType': MessageType.confirm.name,
+            'userDeviceToken': userDeviceToken,
+            'captainCurrentLocation': jsonEncode({
+              'lat': captainCurrentLocation.latitude,
+              'lng': captainCurrentLocation.longitude
+            }),
+          }
+        },
+      ),
+    );
+    if (response.statusCode != 200) {
+      throw ServerException();
+    }
+  }
+
+  Future sendRejectResponse(String userDeviceToken) async {
+    final response = await client.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      headers: <String, String>{
+        'content-Type': 'application/json',
+        'Authorization': 'key=$fcmServerKey',
+      },
+      body: jsonEncode(
+        {
+          'to': userDeviceToken,
+          'priority': 'high',
+          // 'notification': {
+          //   'title': 'Are you ready? ',
+          //   'body': 'The captain is in the way to you!',
+          // },
+          'data': {
+            'messageType': MessageType.reject.name,
+            'userDeviceToken': userDeviceToken,
+          }
+        },
+      ),
+    );
+    if (response.statusCode != 200) {
       throw ServerException();
     }
   }

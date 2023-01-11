@@ -5,14 +5,21 @@ import '../../../../resources/app_margins_paddings.dart';
 import '../../../../resources/colors_manager.dart';
 import '../../../../resources/font_manager.dart';
 
-class PositionedYellowChip extends StatelessWidget {
-  const PositionedYellowChip({required this.text, Key? key}) : super(key: key);
+class PositionedChip extends StatelessWidget {
+  const PositionedChip({
+    required this.text,
+    required this.topPadding,
+    required this.color,
+    Key? key,
+  }) : super(key: key);
   final String text;
+  final double topPadding;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: AppPadding.p40,
+      top: topPadding,
       child: Container(
         //Note The solver is BoxConstraints
         constraints: BoxConstraints(
@@ -23,7 +30,7 @@ class PositionedYellowChip extends StatelessWidget {
           horizontal: AppPadding.p12,
         ),
         decoration: BoxDecoration(
-          color: ColorsManager.yellowAccent,
+          color: color,
           borderRadius: BorderRadius.circular(AppPadding.p20),
           boxShadow: const [
             BoxShadow(
@@ -35,9 +42,8 @@ class PositionedYellowChip extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: FontSize.s20,
-            color: ColorsManager.greyBlack,
             fontWeight: FontWeightManager.medium,
           ),
         ),

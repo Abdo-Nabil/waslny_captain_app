@@ -37,11 +37,18 @@ class _MapContainerState extends State<MapContainer> {
         },
         polylines: {
           Polyline(
-            polylineId: const PolylineId('overView'),
+            polylineId: const PolylineId('polyLine1'),
+            color: ColorsManager.purpleColor,
+            width: ConstantsManager.polyLineWidth,
+            points: BlocProvider.of<HomeScreenCubit>(context, listen: true)
+                .polyLinePointsList1,
+          ),
+          Polyline(
+            polylineId: const PolylineId('polyLine2'),
             color: ColorsManager.redColor,
             width: ConstantsManager.polyLineWidth,
             points: BlocProvider.of<HomeScreenCubit>(context, listen: true)
-                .polyLinePointsList,
+                .polyLinePointsList2,
           ),
         },
         markers:

@@ -150,7 +150,7 @@ class DialogHelper {
                   Expanded(
                     child: Text.rich(
                       TextSpan(
-                        text: AppStrings.from,
+                        text: AppStrings.from.tr(context),
                         style: const TextStyle(color: Colors.red),
                         children: <TextSpan>[
                           TextSpan(
@@ -171,7 +171,7 @@ class DialogHelper {
                   Expanded(
                     child: Text.rich(
                       TextSpan(
-                        text: AppStrings.to,
+                        text: AppStrings.to.tr(context),
                         style: const TextStyle(color: Colors.greenAccent),
                         children: <TextSpan>[
                           TextSpan(
@@ -196,7 +196,7 @@ class DialogHelper {
                 await onCancelButton();
               },
               child: Text(
-                AppStrings.cancel.tr(context),
+                AppStrings.reject.tr(context),
               ),
             ),
             TextButton(

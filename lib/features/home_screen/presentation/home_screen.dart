@@ -1,31 +1,21 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:waslny_captain/core/extensions/string_extension.dart';
 import 'package:waslny_captain/core/util/dialog_helper.dart';
 import 'package:waslny_captain/core/util/toast_helper.dart';
-import 'package:waslny_captain/core/widgets/add_horizontal_space.dart';
-import 'package:waslny_captain/features/authentication/cubits/auth_cubit.dart';
-import 'package:waslny_captain/features/authentication/presentation/widgets/custom_button.dart';
-import 'package:waslny_captain/features/authentication/services/models/captain_model.dart';
-import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_form_container.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/map_container.dart';
+import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_call_row.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_status_icon.dart';
 import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_loc_icon.dart';
-import 'package:waslny_captain/features/home_screen/presentation/widgets/positioned_yellow_chip.dart';
-import 'package:waslny_captain/features/home_screen/services/models/active_captain_model.dart';
-import 'package:waslny_captain/features/home_screen/services/models/message_type.dart';
+import 'package:waslny_captain/features/home_screen/presentation/widgets/two_chips.dart';
 
 import '../../../resources/app_strings.dart';
 import '../../../resources/constants_manager.dart';
 import '../cubits/home_screen_cubit.dart';
-import '../services/models/direction_model.dart';
 
 //TODO: After login you must get user(captain) data if any field of non-nullable fields are null,
 //this means that the user account has been created in Auth section, but not in the fireStore (May be connection lost), so request the user to continue entering the data.
@@ -79,8 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //
     // debugPrint(
     //     'sssss ${HomeScreenCubit.getIns(context).captainInformation.captainId}');
-    final DirectionModel? directionModel =
-        HomeScreenCubit.getIns(context).directionModel;
+
     //
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -148,44 +137,12 @@ class _HomeScreenState extends State<HomeScreen> {
           // resizeToAvoidBottomInset: false,
           body: Stack(
             alignment: Alignment.center,
-            children: [
-              const MapContainer(),
-              directionModel != null
-                  ? PositionedYellowChip(
-                      text:
-                          '${directionModel.distance}, ${directionModel.duration}',
-                    )
-                  : Container(),
-              const PositionedLocIcon(),
-              const PositionedStatusIcon(),
-              // const PositionedFormContainer(),
-              // Container(
-              //   color: Colors.black.withOpacity(0.7),
-              //   // height: 200,
-              //   // width: 400,
-              // ),
-              // Stack(
-              //   alignment: Alignment.center,
-              //   children: [
-              //     Container(
-              //       color: Colors.black.withOpacity(0.75),
-              //     ),
-              //     ElevatedButton(
-              //       onPressed: () {
-              //         HomeScreenCubit.getIns(context).addActiveCaptain();
-              //       },
-              //       child: FittedBox(
-              //         child: Row(
-              //           children: [
-              //             const Icon(Icons.power_settings_new),
-              //             const AddHorizontalSpace(12.0),
-              //             Text(AppStrings.startWorking.tr(context)),
-              //           ],
-              //         ),
-              //       ),
-              //     )
-              //   ],
-              // ),
+            children: const [
+              MapContainer(),
+              TwoChips(),
+              PositionedLocIcon(),
+              PositionedStatusIcon(),
+              PositionedCallRow(),
             ],
           ),
         ),
@@ -216,12 +173,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // In foreground
     FirebaseMessaging.onMessage.listen(
-      (RemoteMessage message) {
+      (RemoteMessage message) async {
+        HomeScreenCubit.getIns(context).firstMessageData = message;
         debugPrint('Got a message whilst in the foreground!');
-        DialogHelper.notificationDialog(context, message.data,
-            ConstantsManager.userAndCaptainRequestTimeDuration, () {
-          //implement me !!!!!!
-        }, () {});
+        await DialogHelper.notificationDialog(
+          context,
+          message.data,
+          ConstantsManager.userAndCaptainRequestTimeDuration,
+          () async {
+            await HomeScreenCubit.getIns(context)
+                .onMessageConfirm(message, context);
+          },
+          () async {
+            await HomeScreenCubit.getIns(context)
+                .onMessageReject(message, context);
+          },
+        );
       },
     );
 

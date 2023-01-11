@@ -116,6 +116,8 @@ class AppStrings {
   static const confirm = "confirm";
   static const requestTimeOut = "requestTimeOut";
   static const requestTerminated = "requestTerminated";
+  static const callNow = "callNow";
+  static const reject = "reject";
 
   //
   //

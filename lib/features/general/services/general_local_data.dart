@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/error/exceptions.dart';
 
@@ -22,6 +24,21 @@ class GeneralLocalData {
     final bool result = await sharedPreferences.setString(key, value);
     if (!result) {
       throw CacheSavingException();
+    }
+  }
+
+  Future callNumber(String phoneNumber) async {
+    final Uri url = Uri.parse('tel:${phoneNumber}');
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        debugPrint('HomeLocalData callNumber :: else block ::');
+        throw CallNumberException();
+      }
+    } catch (e) {
+      debugPrint('HomeLocalData callNumber :: $e');
+      throw CallNumberException();
     }
   }
 }

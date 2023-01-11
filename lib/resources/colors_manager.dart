@@ -7,6 +7,7 @@ class ColorsManager {
   static const Color greyColor = Colors.grey;
   static Color greyColorShade200 = Colors.grey.shade200;
   static const Color redColor = Colors.red;
+  static const Color purpleColor = Colors.purple;
   static const Color greenColor = Colors.greenAccent;
   static Color yellowAccent = Colors.yellowAccent;
   static Color greyBlack = HexColor('#000014');

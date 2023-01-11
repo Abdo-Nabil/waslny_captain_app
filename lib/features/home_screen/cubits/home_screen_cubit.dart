@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:core';
+import 'dart:core';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +24,7 @@ import 'package:waslny_captain/resources/image_assets.dart';
 
 import '../../../core/error/exceptions.dart';
 import '../../../resources/app_strings.dart';
+import '../../localization/presentation/cubits/localization_cubit.dart';
 import '../services/home_local_data.dart';
 import '../services/models/active_captain_model.dart';
 import '../services/models/direction_model.dart';
@@ -37,19 +42,31 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   late bool _isOrigin;
   late GoogleMapController mapController;
   Set<Marker> markers = {};
-  List<LatLng> polyLinePointsList = [];
+  List<LatLng> polyLinePointsList1 = [];
+  List<LatLng> polyLinePointsList2 = [];
   late LatLng origin;
   late LatLng destination;
   Marker? originMarker;
   Marker? destinationMarker;
-  DirectionModel? directionModel;
+  DirectionModel? directionModel1;
+  DirectionModel? directionModel2;
   late BitmapDescriptor markerCustomIcon;
   TextEditingController? toController;
   TextEditingController? fromController;
   late CaptainModel captainInformation;
   bool isOnlineCaptain = false;
   LatLng captainCurrentLocation = ConstantsManager.nullLatLng;
+  late dynamic firstMessageData;
+  bool showCallRow = false;
 
+  //
+  //from userToCaptainFirstMessage
+  late RemoteMessage message1;
+  //
+  //from captainToUserFirstMessage
+  late RemoteMessage message2;
+
+  //
   getIsOrigin() {
     return _isOrigin;
   }
@@ -147,7 +164,7 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
       //
       originMarker != null ? markers.remove(originMarker) : () {};
       destinationMarker != null ? markers.remove(destinationMarker) : () {};
-      polyLinePointsList.clear();
+      polyLinePointsList1.clear();
       //
       originMarker = Marker(
         markerId: const MarkerId('origin'),
@@ -198,30 +215,6 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
         emit(SearchPlaceSuccessState(success));
       });
     }
-  }
-
-  Future getDirections(BuildContext context, bool isEnglish) async {
-    //
-    emit(HomeLoadingState());
-    await Future.delayed(const Duration(seconds: 3));
-
-    final either = await homeRepo.getDirections(origin, destination, isEnglish);
-    either.fold(
-      (failure) {
-        if (failure.runtimeType == ServerFailure) {
-          emit(HomeServerFailureWithPopState());
-        } else if (failure.runtimeType == OfflineFailure) {
-          emit(HomeConnectionFailureWithPopState());
-        }
-      },
-      (success) {
-        directionModel = success;
-        polyLinePointsList = success.polyLinePoints;
-        mapController.animateCamera(CameraUpdate.newLatLngBounds(
-            success.bounds, ConstantsManager.mapPadding));
-        emit(HomeSuccessWithPopState());
-      },
-    );
   }
 
   Future<Stream<LatLng>?> getMyLocationStream() async {
@@ -380,6 +373,111 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
     );
   }
 
+  Future<bool> getDirections(
+    LatLng captainOrigin,
+    LatLng userOrigin,
+    LatLng userDestination,
+    bool isEnglish,
+  ) async {
+    //
+    emit(HomeLoadingState());
+    bool isFailed = true;
+    await Future.delayed(const Duration(seconds: 3));
+    final either =
+        await homeRepo.getDirections(captainOrigin, userOrigin, isEnglish);
+    await either.fold(
+      (failure) {
+        if (failure.runtimeType == ServerFailure) {
+          emit(HomeServerFailureWithPopState());
+        } else if (failure.runtimeType == OfflineFailure) {
+          emit(HomeConnectionFailureWithPopState());
+        }
+      },
+      (success1) async {
+        directionModel1 = success1;
+        polyLinePointsList1 = success1.polyLinePoints;
+        //
+        final either2 = await homeRepo.getDirections(
+            userOrigin, userDestination, isEnglish);
+        either2.fold(
+          (failure) {
+            if (failure.runtimeType == ServerFailure) {
+              emit(HomeServerFailureWithPopState());
+            } else if (failure.runtimeType == OfflineFailure) {
+              emit(HomeConnectionFailureWithPopState());
+            }
+          },
+          (success2) {
+            isFailed = false;
+            directionModel2 = success2;
+            polyLinePointsList2 = success2.polyLinePoints;
+          },
+        );
+      },
+    );
+    return isFailed;
+  }
+
+  Future<bool> _sendConfirmResponse() async {
+    bool isFailed = true;
+    final userDeviceToken = message1.data['userDeviceToken'];
+    final either =
+        await homeRepo.sendConfirmResponse(userDeviceToken, myCurrentLatLng);
+    either.fold((failure) {
+      if (failure.runtimeType == ServerFailure) {
+        emit(HomeServerFailureWithPopState());
+      } else if (failure.runtimeType == OfflineFailure) {
+        emit(HomeConnectionFailureWithPopState());
+      }
+    }, (r) {
+      //implement success
+      isFailed = false;
+    });
+    return isFailed;
+  }
+
+  Future onMessageConfirm(RemoteMessage message, BuildContext context) async {
+    message1 = message;
+    final captainOrigin = myCurrentLatLng;
+    final userOrigin = LatLng(
+      jsonDecode(message.data['latLngOrigin'])['lat'],
+      jsonDecode(message.data['latLngOrigin'])['lng'],
+    );
+    final userDestination = LatLng(
+      jsonDecode(message.data['latLngDestination'])['lat'],
+      jsonDecode(message.data['latLngDestination'])['lng'],
+    );
+    final bool isFailed = await getDirections(
+      captainOrigin,
+      userOrigin,
+      userDestination,
+      LocalizationCubit.getIns(context).isEnglishLocale(),
+    );
+    if (!isFailed) {
+      bool isFailed2 = await _sendConfirmResponse();
+      if (!isFailed2) {
+        showCallRow = true;
+        mapController.animateCamera(CameraUpdate.newLatLngBounds(
+            directionModel1!.bounds, ConstantsManager.mapPadding));
+        emit(HomeSuccessWithPopState());
+      }
+    }
+  }
+
+  Future onMessageReject(RemoteMessage message, BuildContext context) async {
+    final userDeviceToken = message1.data['userDeviceToken'];
+    final either = await homeRepo.sendRejectResponse(userDeviceToken);
+    either.fold((failure) {
+      if (failure.runtimeType == ServerFailure) {
+        emit(HomeServerFailureWithPopState());
+      } else if (failure.runtimeType == OfflineFailure) {
+        emit(HomeConnectionFailureWithPopState());
+      }
+    }, (r) {
+      //implement success
+    });
+  }
+
   //-------------------------------------------------------------------------
 
   static const LatLng cairoLatLng = LatLng(
@@ -395,63 +493,4 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   _showErrorToast() {
     emit(HomeWithToastState(AppStrings.someThingWentWrong, ToastStates.error));
   }
-//
-  /* Future getMyLocation() async {
-    //
-    final either = await homeRepo.checkLocationPermissions();
-    bool isOk = false;
-    either.fold(
-      (failure) {
-        emit(HomeFailureWithoutPopState());
-      },
-      (success) {
-        switch (success) {
-          case LocPermission.disabled:
-            emit(OpenLocationSettingState(AppStrings.locationServicesDisabled));
-            break;
-
-          case LocPermission.denied:
-            emit(OpenAppSettingState(AppStrings.locationPermissionsDenied));
-            break;
-
-          case LocPermission.deniedForever:
-            emit(OpenAppSettingState(
-                AppStrings.locationPermissionsDeniedForEver));
-            break;
-          case LocPermission.done:
-            isOk = true;
-            break;
-        }
-      },
-    );
-
-    //
-    if (isOk) {
-      emit(HomeLoadingState());
-      final isConnected = await homeRepo.isConnected();
-      if (isConnected) {
-        final either = await homeRepo.getMyLocation();
-
-        either.fold(
-          (failure) {
-            emit(HomeFailureWithPopState());
-          },
-          (success) async {
-            myInitialLatLng = LatLng(
-              success.latitude,
-              success.longitude,
-            );
-            emit(HomeSuccessWithPopState());
-            debugPrint('My Location $success');
-          },
-        );
-      }
-      //
-      else {
-        emit(HomeConnectionFailureState());
-      }
-    } else {
-      emit(HomeLocPermissionDeniedState());
-    }
-  }*/
 }

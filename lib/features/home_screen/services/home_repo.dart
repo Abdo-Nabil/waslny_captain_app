@@ -150,6 +150,41 @@ class HomeRepo {
     }
   }
 
+  Future<Either<Failure, Unit>> sendConfirmResponse(
+      String userDeviceToken, LatLng captainCurrentLocation) async {
+    if (await networkInfo.isConnected) {
+      //
+      try {
+        await homeRemoteData.sendConfirmResponse(
+            userDeviceToken, captainCurrentLocation);
+        return Future.value(const Right(unit));
+      } catch (e) {
+        debugPrint('HomeRepo :: sendConfirmResponse :: $e');
+        return Left(ServerFailure());
+      }
+      //
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
+  Future<Either<Failure, Unit>> sendRejectResponse(
+      String userDeviceToken) async {
+    if (await networkInfo.isConnected) {
+      //
+      try {
+        await homeRemoteData.sendRejectResponse(userDeviceToken);
+        return Future.value(const Right(unit));
+      } catch (e) {
+        debugPrint('HomeRepo :: sendRejectResponse :: $e');
+        return Left(ServerFailure());
+      }
+      //
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
   double getDistanceBetween(LatLng origin, LatLng destination) {
     return homeLocalData.getDistanceBetween(origin, destination);
   }

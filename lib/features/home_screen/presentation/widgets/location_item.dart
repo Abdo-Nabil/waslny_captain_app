@@ -52,7 +52,7 @@ class PlaceItem extends StatelessWidget {
     } else {
       HomeScreenCubit.getIns(context).destination = placeModel.location;
       HomeScreenCubit.getIns(context).addOrgOrDesMarker(context);
-      HomeScreenCubit.getIns(context).getDirections(context, isEnglishLocale);
+      // HomeScreenCubit.getIns(context).getDirections(context, isEnglishLocale);
     }
   }
 }

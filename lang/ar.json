@@ -105,7 +105,10 @@
   "xRequestsATrip": "يطلب رحلة",
   "confirm": "موافق",
   "requestTimeOut": "انتهى وقت الطلب ",
-  "requestTerminated": "تم انهاء الطلب!"
+  "requestTerminated": "تم انهاء الطلب!",
+  "callNow": "اتصل الان",
+  "reject": "رفض"
+
 
 
 
